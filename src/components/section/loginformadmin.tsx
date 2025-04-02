@@ -8,6 +8,7 @@ import { ColorRing } from "react-loader-spinner";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { setTokenCookie } from "@/app/(protected)/actions/cookie";
 // Define form schema with Zod
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -41,7 +42,9 @@ export default function LoginAdmin() {
             withCredentials: true,
           }
         );
+        setTokenCookie(response.data.refreshToken)
                router.replace("/admindashboard");
+
       } catch (error:any) {
         if(error.response.status==404){
           toast.error('Admin Not Found', {

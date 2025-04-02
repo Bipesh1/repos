@@ -45,7 +45,6 @@ export default function LoginStudent() {
           }
         );
         setTokenCookie(response.data.refreshToken)
-        localStorage.setItem("accessToken", response.data.token);
                router.replace("/studentdashboard");
                router.refresh()
       } catch (error:any) {

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ForgotPasswordAdmin } from "../forgotpasswordadmin";
+import { setTokenCookie } from "@/app/(protected)/actions/cookie";
 // Define form schema with Zod
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -45,6 +46,7 @@ export default function LoginSuperAdmin() {
             withCredentials: true,
           }
         );
+        setTokenCookie(response.data.refreshToken)
         router.replace("/dashboard");
       } catch (error: any) {
         if (error.response.status == 404) {
