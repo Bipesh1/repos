@@ -1,0 +1,114 @@
+"use server"
+import getToken from "@/helpers/getToken";
+import { ActionResponse } from ".";
+import axios from "axios";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+
+
+export async function getActiveAdmin(): Promise<ActionResponse<any[]>> {
+    try {
+      const token =await getToken()
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin`,{
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
+          
+      }
+    }
+    );
+  
+      return { data: response.data, msg: "Countries fetched successfully", error: null };
+    } catch (error: unknown) {
+      return { data: null, error:"An error occured"};
+    }
+  }
+
+  export async function createAdmin(values:any): Promise<ActionResponse<any>> {
+    try {
+      const token =await getToken()
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/register`,values,{
+        withCredentials: true,
+        headers:{
+          'Authorization': `Bearer ${token}`,
+        }
+    });
+    
+      revalidatePath('/admin')
+      return { data: response.data,msg:"Created Succesfully", error: null };
+    } catch (error: unknown) {
+        
+      return { data: null, error:"An error occured"};
+    }
+  }
+
+  export async function fetchAdminById(id:any): Promise<ActionResponse<any>> {
+    try {
+      const token =await getToken()
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/${id}`,{
+        withCredentials: true,
+        headers:{
+          'Authorization': `Bearer ${token}`,
+        }
+    });
+      return { data: response.data,msg:"Fetched Succesfully", error: null };
+    } catch (error: unknown) {
+      return { data: null, error:"An error occured"};
+    }
+  }
+
+  export async function editAdmin(values:any,id:any): Promise<ActionResponse<any>> {
+    try {
+      const token =await getToken()
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/update/${id}`,values,{
+        withCredentials: true,
+        headers:{
+          'Authorization': `Bearer ${token}`,
+        }
+    });
+      revalidatePath('/admin')
+      return { data: response.data,msg:"Edited Succesfully", error: null, status:200 };
+    } catch (error: unknown) {
+      return { data: null, error:"An error occured"};
+    }
+  }
+
+  export async function deleteAdmin(id:any): Promise<ActionResponse<any>> {
+    try {
+      const token =await getToken()
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/${id}`,{
+        withCredentials: true,
+        headers:{
+          'Authorization': `Bearer ${token}`,
+        }
+    });
+   
+      revalidatePath('/admin')
+      return { data: response.data,msg:"Deleted Succesfully", error: null };
+    } catch (error: unknown) {
+      return { data: null, error:"An error occured"};
+    }
+  }
+
+  export async function Logout() {
+    try {
+      // Get the cookies
+      const cookieStore = cookies();
+      
+      // Retrieve refreshToken (optional for debugging)
+      const refreshToken = (await cookieStore).get("refreshToken");
+    
+  
+      // Delete the refreshToken cookie
+      (await cookieStore).delete("refreshToken");
+  
+      // Optional: Revalidate the page after logout
+      revalidatePath("/login");
+  
+      return { data: null, msg: "Logged out successfully", error: null, status:200 };
+    } catch (error) {
+      console.error("Logout error:", error);
+      return { data: null, error: "An error occurred" };
+    }
+  }
