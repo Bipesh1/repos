@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ForgotPasswordAdmin } from "../forgotpasswordadmin";
 import { setTokenCookie } from "@/app/(protected)/actions/cookie";
+
 // Define form schema with Zod
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -22,7 +23,6 @@ export const dynamic = 'force-dynamic';
 
 export default function LoginSuperAdmin() {
   const router = useRouter();
-
   const [isPending, startTransition] = useTransition();
   const {
     register,
@@ -46,10 +46,10 @@ export default function LoginSuperAdmin() {
             withCredentials: true,
           }
         );
-        setTokenCookie(response.data.refreshToken)
+        setTokenCookie(response.data.refreshToken);
         router.replace("/dashboard");
       } catch (error: any) {
-        if (error.response.status == 404) {
+        if (error.response.status === 404) {
           toast.error("Admin Not Found", {
             position: "top-right",
             autoClose: 5000,
@@ -64,19 +64,22 @@ export default function LoginSuperAdmin() {
       }
     });
   };
+
   return (
-    <div className="form-container shadow-lg space-y-4 p-6 rounded-lg">
+    <div className="form-container relative shadow-lg space-y-4 p-6 rounded-lg">
       <ToastContainer />
       {isPending && (
-        <ColorRing
-          visible={true}
-          height="80"
-          width="80"
-          ariaLabel="color-ring-loading"
-          wrapperStyle={{}}
-          wrapperClass="color-ring-wrapper"
-          colors={["#4C8BBD", "#4C8BBD", "#4C8BBD", "#67BE60", "#67BE60"]}
-        />
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">
+          <ColorRing
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="color-ring-loading"
+            wrapperStyle={{}}
+            wrapperClass="color-ring-wrapper"
+            colors={["#4C8BBD", "#4C8BBD", "#4C8BBD", "#67BE60", "#67BE60"]}
+          />
+        </div>
       )}
       <p className="title text-2xl font-bold">
         Welcome <span className="text-primary">Back!</span>
@@ -90,10 +93,11 @@ export default function LoginSuperAdmin() {
             placeholder="Email"
           />
           {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.email.message}
+            </p>
           )}
         </div>
-
         <div>
           <input
             {...register("password")}
@@ -107,9 +111,8 @@ export default function LoginSuperAdmin() {
             </p>
           )}
         </div>
-
         <button
-          className="form-btn w-full bg-primary  text-white py-2 rounded hover:bg-blue-700 transition"
+          className="form-btn w-full bg-primary text-white py-2 rounded hover:bg-blue-700 transition"
           type="submit"
           disabled={isSubmitting}
         >

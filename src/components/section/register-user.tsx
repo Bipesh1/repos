@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { studentSchema } from "@/formschemas/student";
+import Link from "next/link";
 
 type RegisterFormValues = z.infer<typeof studentSchema>;
 
@@ -151,7 +152,7 @@ export default function RegisterUser() {
       {/* Already have an account? */}
       <p className="text-center text-sm mt-4">
         Already have an account?{" "}
-        <span className="text-secondary cursor-pointer hover:underline">Login</span>
+       <Link href="/login"><span className="text-secondary cursor-pointer hover:underline">Login</span></Link> 
       </p>
     </div>
   );

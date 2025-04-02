@@ -30,7 +30,7 @@ export function WhyUsSection() {
                 src={aboutus}
                 width={600}
                 alt="Consultancy Services"
-                className="relative rounded-2xl shadow-2xl"
+                className="relative rounded-2xl shadow-2xl mx-auto"
            
               />
             </div>
@@ -40,7 +40,7 @@ export function WhyUsSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="absolute -top-6 left-0 bg-accent text-foreground rounded-lg p-4 shadow-lg">
+              className="absolute -top-6 hidden xl:block lg:left-0 bg-accent text-foreground rounded-lg p-4 shadow-lg">
               <div className="flex items-center gap-2">
                 <CircleCheckBig className="h-5 w-5 text-secondary" />
                 <span className="text-sm font-medium">No.1 Consultancy</span>
@@ -51,7 +51,7 @@ export function WhyUsSection() {
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="absolute -bottom-6 right-0 bg-accent text-foreground rounded-lg p-4 shadow-lg">
+              className="absolute -bottom-6 hidden xl:block right-0 bg-accent text-foreground rounded-lg p-4 shadow-lg">
               <div className="flex items-center gap-2">
               <CircleCheckBig className="h-5 w-5 text-secondary" />
                 <span className="text-sm font-medium">Streamlining the student flow</span>
