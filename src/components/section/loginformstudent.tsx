@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import { ForgotPassword } from "../forgot-password";
+import { setTokenCookie } from "@/app/(protected)/actions/cookie";
 // Define form schema with Zod
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -43,7 +44,7 @@ export default function LoginStudent() {
             withCredentials: true,
           }
         );
-        console.log(response);
+        setTokenCookie(response.data.refreshToken)
         localStorage.setItem("accessToken", response.data.token);
                router.replace("/studentdashboard");
                router.refresh()
