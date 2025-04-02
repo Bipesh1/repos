@@ -37,12 +37,14 @@ export default function LoginStudent() {
     startTransition(async () => {
       try {
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/login/`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/login`,
           data,
           {
             withCredentials: true,
           }
         );
+        console.log(response);
+        localStorage.setItem("accessToken", response.data.token);
                router.replace("/studentdashboard");
                router.refresh()
       } catch (error:any) {

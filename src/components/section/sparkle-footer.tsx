@@ -101,12 +101,12 @@ const FooterNavigation = () => (
 
 const navigation = {
   connect: [
-    { name: "Universities", href: "/universities" },
-    { name: "FAQ", href: "/faq" },
+    { name: "Universities", href: "/" },
+    { name: "FAQ", href: "/" },
   ],
   company: [
     { name: "Home", href: "/" },
-    { name: "Contact", href: "/contact" },
+    { name: "Contact", href: "/" },
   ],
 };
 

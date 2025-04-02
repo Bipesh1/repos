@@ -17,6 +17,8 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
+export const dynamic = 'force-dynamic';
+
 export default function LoginSuperAdmin() {
   const router = useRouter();
 
@@ -37,7 +39,7 @@ export default function LoginSuperAdmin() {
     startTransition(async () => {
       try {
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/superadmin/login/`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/superadmin/login`,
           data,
           {
             withCredentials: true,
