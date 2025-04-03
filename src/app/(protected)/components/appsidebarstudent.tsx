@@ -34,6 +34,16 @@ const items = [
     url: "/admindashboard/students",
     icon: Home,
   }, 
+  {
+    title: "Home",
+    url: "/",
+    icon: Home,
+  }, 
+  {
+    title: "Dashboard",
+    url: "/admindashboard",
+    icon: Home,
+  }, 
 ]
 
 

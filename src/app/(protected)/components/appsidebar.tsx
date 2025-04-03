@@ -39,6 +39,11 @@ const items = [
     icon: Home,
   },
   {
+    title: "Home",
+    url: "/",
+    icon: Home,
+  },
+  {
     title: "Courses",
     url: "/dashboard/courses",
     icon: Inbox,
