@@ -172,6 +172,10 @@ export default function UniversityEdit({ id }: { id: string }) {
         if (image) {
           formData.append("image", image);
         }
+        if (uniImage) {
+          formData.append("uniLogo", uniImage);
+        }
+
 
         const response = await editUniversity(formData, id);
 
