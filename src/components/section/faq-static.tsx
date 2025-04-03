@@ -58,7 +58,7 @@ export default function FaqStatic() {
             height={500}
           />
         </div>
-        <Accordion type="single" collapsible className="md:w-[700px] w-[380px]">
+        <Accordion type="single" collapsible className="md:w-[700px]  w-[380px] container mx-auto">
           <h2 className="text-2xl font-semibold">
             Explore <span className="text-secondary">FAQ</span>
           </h2>
@@ -67,7 +67,7 @@ export default function FaqStatic() {
               <AccordionTrigger className="text-lg">
                 {faq.ques}
               </AccordionTrigger>
-              <AccordionContent className="text-base md:w-[700px] w-[450px]">
+              <AccordionContent className="text-base md:w-[700px] w-[380px]">
                 {faq.ans}
               </AccordionContent>
             </AccordionItem>

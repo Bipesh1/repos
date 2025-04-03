@@ -12,12 +12,17 @@ import {
 import InquiryForm from "@/components/inquiryform";
 import TopCourses from '@/components/topcourses';
 import { NavigationUniversity } from '@/components/navigation-university';
+import { Button } from '@/components/ui/button';
+import { checkUser } from '@/app/(protected)/actions/user';
+import ApplyUniversity from '@/app/(protected)/studentdashboard/universities/(components)/apply-to-uni';
 
 export default async function Page({params}:{
     params:{
         id:string;
     }
 }) {
+    const userrespone= await checkUser()
+    const data= userrespone.data
     const {id}= await params
     const uniresponse= await fetchUniversityById(id)
     const unidata= uniresponse.data.university
@@ -25,6 +30,7 @@ export default async function Page({params}:{
     <div className="container mx-auto space-y-4">
       <CountryHeroSection image={null} altimage={unidata.image.url} address={unidata.address} title={unidata.name} alt={unidata.imageAlt} />
       <div className="container md:px-12 px-4 space-y-4">
+      {data.role=="user" && <Button className='float-end cursor-pointer' variant={"outline"}><ApplyUniversity id={id}/></Button>}
       
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">

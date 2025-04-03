@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./(website)/globals.css";
+import ProgressBar from "@/components/progressbar";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -80,6 +81,7 @@ export default function RootLayout({
         </script>
       </head>
       <body className={poppins.className}>
+        <ProgressBar/>
         {children}
       </body>
     </html>

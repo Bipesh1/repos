@@ -44,30 +44,38 @@ export default async function MobileSidebar() {
         </div>
 
         {/* User Dashboard Button */}
-        {user?.role == "user" && (
+        {user?.role === "user" && (
+          user?.category === "none" ? (
+            <Button variant="outline" className="w-full mb-4">
+              <Link href="/payment" className="text-primary w-full text-left">
+                Payment For Dashboard
+              </Link>
+            </Button>
+          ) : (
+            <Button variant="outline" className="w-full mb-4">
+              <Link href="/studentdashboard" className="text-primary w-full text-left">
+                Your Dashboard
+              </Link>
+            </Button>
+          )
+        )}
+        {user?.role === "super-admin" && (
           <Button variant="outline" className="w-full mb-4">
-            <Link href={"/studentdashboard"} className="text-primary w-full text-left">
+            <Link href="/dashboard" className="text-primary w-full text-left">
               Your Dashboard
             </Link>
           </Button>
         )}
-        {user?.role == "super-admin" && (
+        {user?.role === "admin" && (
           <Button variant="outline" className="w-full mb-4">
-            <Link href={"/dashboard"} className="text-primary w-full text-left">
-              Your Dashboard
-            </Link>
-          </Button>
-        )}
-        {user?.role == "admin" && (
-          <Button variant="outline" className="w-full mb-4">
-            <Link href={"/admindashboard"} className="text-primary w-full text-left">
+            <Link href="/admindashboard" className="text-primary w-full text-left">
               Your Dashboard
             </Link>
           </Button>
         )}
         {user == null && (
           <Button className="bg-primary hover:bg-primary/80 w-full mb-4">
-            <Link href={"/login"} className="w-full text-left">Login</Link>
+            <Link href="/login" className="w-full text-left">Login</Link>
           </Button>
         )}
 
@@ -104,25 +112,25 @@ export default async function MobileSidebar() {
                 <Link href="/company/about" className="block text-secondary/80 hover:text-primary">
                   About Us
                 </Link>
-                <Link href="/company/edupilot" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67eba2b3755e391784ebcd99" className="block text-secondary/80 hover:text-primary">
                   EduPilot
                 </Link>
                 <Link href="/company/faq" className="block text-secondary/80 hover:text-primary">
                   FAQ
                 </Link>
-                <Link href="/company/why-self-apply" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67eba2fd755e391784ebcddc" className="block text-secondary/80 hover:text-primary">
                   Why Self Apply?
                 </Link>
                 <Link href="/company/why-us" className="block text-secondary/80 hover:text-primary">
                   Why Us?
                 </Link>
-                <Link href="/company/media" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67eba33c755e391784ebce20" className="block text-secondary/80 hover:text-primary">
                   Media Coverage
                 </Link>
                 <Link href="/company/blog" className="block text-secondary/80 hover:text-primary">
                   Blog
                 </Link>
-                <Link href="/company/pricing" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67eba390755e391784ebcfaa" className="block text-secondary/80 hover:text-primary">
                   Pricing
                 </Link>
               </div>
@@ -137,16 +145,16 @@ export default async function MobileSidebar() {
               <div className="mb-4">
                 <h3 className="font-medium text-primary mb-2 pl-4">Guide</h3>
                 <div className="space-y-2 pl-6">
-                  <Link href="/apply-usa/guide/top-universities" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/#top-universities" className="block text-secondary/80 hover:text-primary">
                     Top Universities
                   </Link>
-                  <Link href="/apply-usa/guide/scholarships" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/67dfbf97b3691ca0b847fa70" className="block text-secondary/80 hover:text-primary">
                     Scholarships
                   </Link>
-                  <Link href="/apply-usa/guide/working-professionals" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/67e510195644b83ab5a2920e" className="block text-secondary/80 hover:text-primary">
                     For Working Professionals
                   </Link>
-                  <Link href="/apply-usa/guide/visa" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/67dfc007b3691ca0b847faf2" className="block text-secondary/80 hover:text-primary">
                     Visa Guide
                   </Link>
                 </div>
@@ -156,16 +164,16 @@ export default async function MobileSidebar() {
               <div className="mb-4">
                 <h3 className="font-medium text-primary mb-2 pl-4">Universities</h3>
                 <div className="space-y-2 pl-6">
-                  <Link href="/apply-usa/universities/bachelor" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/67dfc18bb3691ca0b847fb43" className="block text-secondary/80 hover:text-primary">
                     Bachelor
                   </Link>
-                  <Link href="/apply-usa/universities/masters" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/67dfc239b3691ca0b847fb96" className="block text-secondary/80 hover:text-primary">
                     Masters
                   </Link>
-                  <Link href="/apply-usa/universities/dba" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/67dfc053b3691ca0b847fb05" className="block text-secondary/80 hover:text-primary">
                     DBA
                   </Link>
-                  <Link href="/apply-usa/universities/phd" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/67dfc32fb3691ca0b847fbca" className="block text-secondary/80 hover:text-primary">
                     PhD
                   </Link>
                 </div>
@@ -175,16 +183,16 @@ export default async function MobileSidebar() {
               <div>
                 <h3 className="font-medium text-primary mb-2 pl-4">Living In USA</h3>
                 <div className="space-y-2 pl-6">
-                  <Link href="/apply-usa/living/job-opportunities" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/67dfc8acb3691ca0b847fd51" className="block text-secondary/80 hover:text-primary">
                     Job Opportunities
                   </Link>
-                  <Link href="/apply-usa/living/post-study-work" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/67dfc397b3691ca0b847fc1b" className="block text-secondary/80 hover:text-primary">
                     Post Study Work
                   </Link>
-                  <Link href="/apply-usa/living/greencard" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/67e10c80318f258e0d32c274" className="block text-secondary/80 hover:text-primary">
                     Apply for Greencard
                   </Link>
-                  <Link href="/apply-usa/living/on-campus-job" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/67e10cd8318f258e0d32c295" className="block text-secondary/80 hover:text-primary">
                     On Campus Job
                   </Link>
                 </div>
@@ -197,28 +205,28 @@ export default async function MobileSidebar() {
             <AccordionTrigger className="text-base py-3">Resources</AccordionTrigger>
             <AccordionContent>
               <div className="space-y-2 pl-4">
-                <Link href="/resources/course-advice" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67e50dc45644b83ab5a29086" className="block text-secondary/80 hover:text-primary">
                   Course Advice
                 </Link>
-                <Link href="/resources/education-loan" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67e50e105644b83ab5a290b4" className="block text-secondary/80 hover:text-primary">
                   Education Loan
                 </Link>
-                <Link href="/resources/meet-alumni" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67e50e7c5644b83ab5a290e8" className="block text-secondary/80 hover:text-primary">
                   Meet Alumni
                 </Link>
-                <Link href="/resources/assured-scholarship" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67e50ebf5644b83ab5a29120" className="block text-secondary/80 hover:text-primary">
                   Assured Scholarship
                 </Link>
-                <Link href="/resources/express-admission" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67e50ef75644b83ab5a2915d" className="block text-secondary/80 hover:text-primary">
                   Express Admission
                 </Link>
-                <Link href="/resources/mbbs" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67e50f365644b83ab5a29197" className="block text-secondary/80 hover:text-primary">
                   MBBS
                 </Link>
-                <Link href="/resources/working-professionals" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67e510195644b83ab5a2920e" className="block text-secondary/80 hover:text-primary">
                   For Working Professionals
                 </Link>
-                <Link href="/resources/nursing" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/67e50f6d5644b83ab5a291d2" className="block text-secondary/80 hover:text-primary">
                   For Nursing
                 </Link>
               </div>
