@@ -42,7 +42,9 @@ export default function UniversityCreate() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const [image, setImage] = useState<File | null>(null);
+  const [uniImage, setUniImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uniImagePreview, setUniImagePreview] = useState<string | null>(null);
   const [countries, setCountries] = useState<any>([]);
 
   const form = useForm<z.infer<typeof universityFormSchema>>({
@@ -97,32 +99,47 @@ export default function UniversityCreate() {
     }
   };
 
+  const handleUniImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUniImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUniImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const onSubmit = (values: z.infer<typeof universityFormSchema>) => {
     try {
       startTransition(async () => {
         const formData = new FormData();
 
-       // Replace this part in your onSubmit function:
-Object.entries(values).forEach(([key, value]) => {
-  if (value !== undefined && value !== null) {
-    if (key === "tags") {
-      // Remove this JSON.stringify conversion
-      // Just append the string directly as it's already comma-separated
-      formData.append(key, value); 
-    } else {
-      formData.append(key, value.toString());
-    }
-  }
-});
+        // Append form values
+        Object.entries(values).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) {
+            if (key === "tags") {
+              formData.append(key, value);
+            } else {
+              formData.append(key, value.toString());
+            }
+          }
+        });
 
-        // Append image if exists
+        // Append main image if exists
         if (image) {
           formData.append("image", image);
         }
 
+        // Append university image if exists
+        if (uniImage) {
+          formData.append("uniLogo", uniImage);
+        }
+
         const response = await createUniversity(formData);
         if (response.status == 400) {
-          toast.error("You haven't uploaded an image ", {
+          toast.error("You haven't uploaded required images", {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -132,14 +149,34 @@ Object.entries(values).forEach(([key, value]) => {
             theme: "light",
           });
         } else {
+          toast.success("University created successfully", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "light",
+          });
           form.reset();
           setImage(null);
+          setUniImage(null);
           setImagePreview(null);
+          setUniImagePreview(null);
           setIsOpen(false);
         }
       });
     } catch (err) {
       console.error(err);
+      toast.error("Failed to create university", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
     }
   };
 
@@ -477,10 +514,10 @@ Object.entries(values).forEach(([key, value]) => {
             />
 
             <div>
-              <FormLabel>University Image</FormLabel>
+              <FormLabel>Main Logo Image</FormLabel>
               <div className="mt-1 flex items-center gap-4">
                 <Input
-                  id="image"
+                  id="mainImage"
                   type="file"
                   onChange={handleImageChange}
                   accept="image/*"
@@ -490,7 +527,29 @@ Object.entries(values).forEach(([key, value]) => {
                   <div className="mt-2">
                     <img
                       src={imagePreview}
-                      alt="Preview"
+                      alt="Logo Preview"
+                      className="h-20 w-20 object-cover rounded-md"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <FormLabel>University Banner Image</FormLabel>
+              <div className="mt-1 flex items-center gap-4">
+                <Input
+                  id="uniImage"
+                  type="file"
+                  onChange={handleUniImageChange}
+                  accept="image/*"
+                  className="w-full"
+                />
+                {uniImagePreview && (
+                  <div className="mt-2">
+                    <img
+                      src={uniImagePreview}
+                      alt="Banner Preview"
                       className="h-20 w-20 object-cover rounded-md"
                     />
                   </div>

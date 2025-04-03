@@ -45,6 +45,8 @@ export default function UniversityEdit({ id }: { id: string }) {
   const [isPending, startTransition] = useTransition();
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uniImage, setUniImage] = useState<File | null>(null);
+  const [uniImagePreview, setUniImagePreview] = useState<string | null>(null);
   const [countries, setCountries] = useState<any>([]);
 
   useEffect(() => {
@@ -52,6 +54,7 @@ export default function UniversityEdit({ id }: { id: string }) {
       startTransition(async () => {
         const response = await fetchUniversityById(id);
         setImagePreview(response.data.university.image.url);
+        setUniImagePreview(response.data.university.uniLogo.url);
         if (response.data) {
           form.reset({
             priority: response.data.university.priority,
@@ -136,6 +139,17 @@ export default function UniversityEdit({ id }: { id: string }) {
       reader.readAsDataURL(file);
     }
   };
+  const handleUniImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUniImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUniImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const onSubmit = (values: z.infer<typeof universityFormSchema>) => {
     try {
@@ -147,7 +161,7 @@ export default function UniversityEdit({ id }: { id: string }) {
             if (key === "tags") {
               // Remove this JSON.stringify conversion
               // Just append the string directly as it's already comma-separated
-              formData.append(key, value); 
+              formData.append(key, value);
             } else {
               formData.append(key, value.toString());
             }
@@ -521,6 +535,28 @@ export default function UniversityEdit({ id }: { id: string }) {
                     <img
                       src={imagePreview}
                       alt="Preview"
+                      className="h-20 w-20 object-cover rounded-md"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <FormLabel>University Banner Image</FormLabel>
+              <div className="mt-1 flex items-center gap-4">
+                <Input
+                  id="uniImage"
+                  type="file"
+                  onChange={handleUniImageChange}
+                  accept="image/*"
+                  className="w-full"
+                />
+                {uniImagePreview && (
+                  <div className="mt-2">
+                    <img
+                      src={uniImagePreview}
+                      alt="Banner Preview"
                       className="h-20 w-20 object-cover rounded-md"
                     />
                   </div>
