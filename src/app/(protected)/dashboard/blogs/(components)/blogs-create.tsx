@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -8,160 +9,156 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger
-} from "@/components/ui/sheet";
- 
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { ColorRing } from "react-loader-spinner";
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/select";
 import { blogFormSchema } from "@/formschemas/blog";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderCircle, Save} from "lucide-react";
-import { useState, useTransition } from "react";
+import { LoaderCircle, Save } from "lucide-react";
+import { useState, useTransition, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import dynamic from "next/dynamic";
 import { createBlog } from "@/app/(protected)/actions/blog";
-import Tiptap from "@/components/Tiptap";
+
+// Dynamically import the RichTextEditor (Quill-based) with SSR disabled.
+const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[200px] flex items-center justify-center">
+      <LoaderCircle className="animate-spin" />
+    </div>
+  ),
+});
+
+// Define the RichTextEditorHandle type (as used in your RichTextEditor)
+type RichTextEditorHandle = {
+  getContent: () => string;
+};
 
 export default function BlogsCreate() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
-  const [image, setImage] = useState<File[]>([]); // Ensure it's an array
-  const [imagePreview, setImagePreview] = useState<string[]>([]); // Ensure it's an array
+  const [images, setImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-  
-
+  // Create form with blogFormSchema
   const form = useForm<z.infer<typeof blogFormSchema>>({
     resolver: zodResolver(blogFormSchema),
     defaultValues: {
-      priority:"",
-      title:"",
-      slug:"",
-      category:"",
-      content:"",
-      tags:"",
+      priority: "",
+      title: "",
+      slug: "",
+      category: "",
+      tags: "",
     },
   });
 
+  // Ref for our RichTextEditor (for the blog content)
+  const contentEditorRef = useRef<RichTextEditorHandle>(null);
+
+  // Handle multiple image file selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if(files) {
-      const newImages = Array.from(files);
-      setImage((prev) => [...prev, ...newImages]); // Now prev is always an array
-  
-      const newPreviews = newImages.map((file) => URL.createObjectURL(file));
-      setImagePreview((prev) => [...prev, ...newPreviews]); // Also ensures prev is an array
+    if (files) {
+      const newFiles = Array.from(files);
+      setImages((prev) => [...prev, ...newFiles]);
+      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+      setImagePreviews((prev) => [...prev, ...newPreviews]);
     }
   };
 
   const handleImageRemove = (index: number) => {
-    setImage((prev) => prev.filter((_, i) => i !== index));
-    setImagePreview((prev) => prev.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const onSubmit = async (values: z.infer<typeof blogFormSchema>) => {
     try {
       await startTransition(async () => {
         const formData = new FormData();
-    
+
+        // Append simple text fields
         formData.append("priority", values.priority);
         formData.append("title", values.title);
         formData.append("slug", values.slug);
         formData.append("category", values.category);
-        formData.append("content", values.content);
         formData.append("tags", values.tags);
-    
-        if(image.length<1){
-          toast.error('Select at least one image.', {
+
+        // Get content from the RichTextEditor
+        const contentFromEditor = contentEditorRef.current?.getContent() || "";
+        formData.append("content", contentFromEditor);
+
+        // Ensure at least one image is provided
+        if (images.length < 1) {
+          toast.error("Select at least one image.", {
             position: "top-right",
             autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
             theme: "light",
-            });
-            return;
+          });
+          return;
         }
 
-        image.forEach((file) => formData.append("images", file));
-    
-        try {
-          const response = await createBlog(formData);
-    
-    
-          // Modify the condition to match the backend response structure
-          if (response.data?.success === true || response.msg === "Created Succesfully") {
-            // Reset form and state
-            form.reset();
-            setImage([]);
-            setImagePreview([]);
-            setIsOpen(false);
-          } else {
-            // Handle error cases
-            toast.error('Blog Creation error. Maybe image extension may be incorrect or data may be duplicated.', {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: false,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                        });
-          }
-        } catch (serverError) {
-          console.error("Server error:", serverError);
-          window.alert("An error occurred while creating the blog");
+        images.forEach((file) => formData.append("images", file));
+
+        // Call your API endpoint
+        const response = await createBlog(formData);
+
+        // Check the response structure and display a toast
+        if (response.data?.success === true || response.msg === "Created Succesfully") {
+          form.reset();
+          setImages([]);
+          setImagePreviews([]);
+          setIsOpen(false);
+          toast.success("Blog created successfully", {
+            position: "top-right",
+            autoClose: 3000,
+            theme: "light",
+          });
+        } else {
+          toast.error("Blog Creation error. Please check your data.", {
+            position: "top-right",
+            autoClose: 5000,
+            theme: "light",
+          });
         }
       });
-    } catch (transitionError) {
-      console.error("Transition error:", transitionError);
-      window.alert("An unexpected error occurred");
+    } catch (error) {
+      console.error("Error creating blog:", error);
+      toast.error("Failed to create blog", {
+        position: "top-right",
+        autoClose: 5000,
+        theme: "light",
+      });
     }
   };
-  
-  
+
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <ToastContainer />
       <SheetTrigger className="float-end text-primary border px-2 py-1 rounded-md hover:text-primary/70 transition-all">
-        Create
+        Create Blog
       </SheetTrigger>
       <SheetContent className="overflow-y-scroll">
         <SheetHeader>
-        <ToastContainer />
           <SheetTitle>Add Blog</SheetTitle>
         </SheetHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className=" space-y-4 py-10"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-10">
             <FormField
               control={form.control}
               name="priority"
@@ -169,10 +166,7 @@ export default function BlogsCreate() {
                 <FormItem>
                   <FormLabel>Priority</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Priority of this blog"
-                      {...field}
-                    />
+                    <Input placeholder="Priority of this blog" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -185,10 +179,7 @@ export default function BlogsCreate() {
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Blog Title"
-                      {...field}
-                    />
+                    <Input placeholder="Blog Title" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -201,38 +192,32 @@ export default function BlogsCreate() {
                 <FormItem>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Slug"
-                      {...field}
-                    />
+                    <Input placeholder="Slug" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-           
             <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger>
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="General">General</SelectItem>
-                    <SelectItem value="Premium">Premium</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-            
+                    <SelectContent>
+                      <SelectItem value="General">General</SelectItem>
+                      <SelectItem value="Premium">Premium</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Rich Text Editor for Blog Content */}
             <FormField
               control={form.control}
               name="content"
@@ -240,82 +225,46 @@ export default function BlogsCreate() {
                 <FormItem>
                   <FormLabel>Content</FormLabel>
                   <FormControl>
-                  <Dialog>
-                  <DialogTrigger asChild>
-                    <Button className="mx-3 bg-gray-200" variant="secondary">Open Text Editor</Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-md max-h-[80vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle>Content</DialogTitle>
-                        <DialogDescription>
-                          Enter the blog contents here
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="flex items-center space-x-2">
-                        <div className="grid flex-1 gap-2">
-                          <Label htmlFor="link" className="sr-only">
-                            Content
-                          </Label>
-                          {/* <textarea
-                                        className="bg-white text-black"
-                                          placeholder="Blog Content..."
-                                          {...field}
-                                  /> */}
-                                  <Tiptap content={field.value} setContent={field.onChange} />
-                        </div>
-                          
-                        </div>
-                        <DialogFooter className="sm:justify-start">
-                          <DialogClose asChild>
-                            <Button type="button" variant="secondary">
-                              Close
-                            </Button>
-                          </DialogClose>
-                        </DialogFooter>
-                </DialogContent>
-                    
-                  </Dialog>
-                    
+                    <div className="min-h-[300px] border rounded-md">
+                      <RichTextEditor
+                        ref={contentEditorRef}
+                        initialContent={field.value}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="tags"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tags</FormLabel>
+                  <FormControl>
+                    <Input placeholder="tag1, tag2, ..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-                <FormField
-                  control={form.control}
-                  name="tags"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tags</FormLabel>
-                      <FormControl>
-                        <Input
-                           placeholder="tag1, tag2, ..."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-
+            {/* Image Upload Section */}
             <div>
               <FormLabel>Blog Images</FormLabel>
               <label className="cursor-pointer border mx-3 text-sm px-3 py-1 rounded-md bg-gray-200 inline-block">
                 Choose Files
-                <Input
-                  type="file"
-                  multiple
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
+                <Input type="file" multiple onChange={handleImageChange} className="hidden" />
               </label>
-              
               <div className="flex gap-2 mt-2 flex-wrap">
-                {imagePreview.map((preview, index) => (
+                {imagePreviews.map((preview, index) => (
                   <div key={index} className="relative w-20 h-20">
-                    <img src={preview} alt="Preview" className="h-20 w-20 object-cover rounded-md" />
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="h-20 w-20 object-cover rounded-md"
+                    />
                     <button
                       type="button"
                       className="absolute top-0 right-0 bg-red-600 text-white text-xs px-1 rounded-full"
@@ -328,14 +277,8 @@ export default function BlogsCreate() {
               </div>
             </div>
 
-            
-
-            <Button size={"sm"} disabled={isPending} type="submit">
-              {isPending ? (
-                <LoaderCircle size={16} className=" animate-spin" />
-              ) : (
-                <Save size={16} />
-              )}
+            <Button size={"sm"} disabled={isPending} type="submit" className="mt-6">
+              {isPending ? <LoaderCircle size={16} className="animate-spin mr-2" /> : <Save size={16} className="mr-2" />}
               Add Blog
             </Button>
           </form>

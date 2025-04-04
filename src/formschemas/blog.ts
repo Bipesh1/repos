@@ -9,8 +9,7 @@ export const blogFormSchema = z.object({
   slug: z.string(), 
   category:z.string(), 
   content:z
-    .string()
-    .min(20, { message: "Blog content name must be at least 20 characters." }),     
+    .string().optional(),     
   // images:z.array(z.instanceof(File)), // Ensures the field is an array of File objects
   tags:z.string(),
 });

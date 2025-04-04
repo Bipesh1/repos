@@ -15,6 +15,7 @@ import { NavigationUniversity } from '@/components/navigation-university';
 import { Button } from '@/components/ui/button';
 import { checkUser } from '@/app/(protected)/actions/user';
 import ApplyUniversity from '@/app/(protected)/studentdashboard/universities/(components)/apply-to-uni';
+import parse from "html-react-parser";
 
 export default async function Page({params}:{
     params:{
@@ -39,21 +40,16 @@ export default async function Page({params}:{
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>
-              <div className="grid grid-cols-1 space-y-4">
-                <h2 className="text-2xl hover:no-underline">Dean's Message</h2>
-                <p className="text-gray-500">
-                 {unidata.deamMsg}
-                </p>
-              </div>
+            <h2 className="text-xl">
+                  About Us
+                </h2>
             </AccordionTrigger>
             <AccordionContent>
               <div className="space-y-4">
-                <h2 className="text-xl">
-                  About Us
-                </h2>
-                <p className='text-base text-gray-500'>
-                    {unidata.content}
-                </p>
+               
+        
+                   { parse(unidata.content)}
+                
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -71,20 +67,21 @@ export default async function Page({params}:{
 
         <div className=" space-y-4" id="description">
                 <h3 className="text-xl text-justify font-semibold text-secondary">
-                  Description
+                  Requirements
                 </h3>
-                {unidata.content&&
-                <p className='text-gray-400 text-base text-justify'>{unidata.content}</p>
-            }
+                <span className='text-gray-500'>{unidata.content&&
+                parse(unidata.syllabus)
+            }</span>
                 
           </div>
           <div className=" space-y-4" id="scholarship">
                 <h3 className="text-xl font-semibold text-secondary">
                   Scholarship
                 </h3>
-                {unidata.scholarship&&
-                <p className='text-gray-400 text-justify text-base'>{unidata.scholarship}</p>
+                <span className='text-gray-500'>{unidata.scholarship&&
+               parse(unidata.scholarship)
             }
+            </span>
                 
           </div>
             </div>

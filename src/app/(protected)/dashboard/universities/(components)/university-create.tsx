@@ -28,7 +28,7 @@ import {
 import { universityFormSchema } from "@/formschemas/university";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon, LoaderCircle, Save, Upload } from "lucide-react";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEffect } from "react";
@@ -37,15 +37,40 @@ import { createUniversity } from "@/app/(protected)/actions/university";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DatePicker } from "@/app/(protected)/components/datepicker";
+import dynamic from "next/dynamic";
+
+const RichTextEditor = dynamic(
+  () => import("@/components/RichTextEditor").then((mod) => mod.default),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-[200px] flex items-center justify-center">
+        <LoaderCircle className="animate-spin" />
+      </div>
+    ),
+  }
+);
+
+// Define the RichTextEditorHandle type
+type RichTextEditorHandle = {
+  getContent: () => string;
+};
 
 export default function UniversityCreate() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const [image, setImage] = useState<File | null>(null);
+  const [sheetOpenCounter, setSheetOpenCounter] = useState(0);
   const [uniImage, setUniImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uniImagePreview, setUniImagePreview] = useState<string | null>(null);
   const [countries, setCountries] = useState<any>([]);
+  const contentEditorRef = useRef<RichTextEditorHandle>(null);
+  const syllabusEditorRef = useRef<RichTextEditorHandle>(null);
+  const scholarshipEditorRef = useRef<RichTextEditorHandle>(null);
+
+
+  
 
   const form = useForm<z.infer<typeof universityFormSchema>>({
     resolver: zodResolver(universityFormSchema),
@@ -62,11 +87,6 @@ export default function UniversityCreate() {
       insta: "",
       x: "",
       phone: "",
-      syllabus: "",
-      estdDate: "",
-      deamMsg: "",
-      scholarship: "",
-      content: "",
       imageAlt: "",
       tags: "",
       admissionOpen: "",
@@ -115,6 +135,21 @@ export default function UniversityCreate() {
     try {
       startTransition(async () => {
         const formData = new FormData();
+        const contentFromEditor = contentEditorRef.current?.getContent() || "";
+        const syllabusFromEditor = syllabusEditorRef.current?.getContent() || "";
+        const scholarshipFromEditor = scholarshipEditorRef.current?.getContent() || "";
+
+        const contentString = Array.isArray(contentFromEditor) 
+        ? contentFromEditor.join("") 
+        : contentFromEditor;
+        
+      const syllabusString = Array.isArray(syllabusFromEditor) 
+        ? syllabusFromEditor.join("") 
+        : syllabusFromEditor;
+        
+      const scholarshipString = Array.isArray(scholarshipFromEditor) 
+        ? scholarshipFromEditor.join("") 
+        : scholarshipFromEditor;
 
         // Append form values
         Object.entries(values).forEach(([key, value]) => {
@@ -126,6 +161,10 @@ export default function UniversityCreate() {
             }
           }
         });
+
+        formData.append("content", contentString);
+        formData.append("syllabus", syllabusString);
+        formData.append("scholarship", scholarshipString);
 
         // Append main image if exists
         if (image) {
@@ -438,19 +477,7 @@ export default function UniversityCreate() {
               />
             </div>
 
-            <FormField
-              control={form.control}
-              name="syllabus"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Syllabus</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Syllabus details" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            
 
             <FormField
               control={form.control}
@@ -467,54 +494,63 @@ export default function UniversityCreate() {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="deamMsg"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Dean's Message</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Message from the Dean" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+<FormField
+                control={form.control}
+                name="syllabus"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Requirements</FormLabel>
+                    <div className="min-h-[200px] border rounded-md">
+                      <RichTextEditor
+                        key={`syllabus-${sheetOpenCounter}`}
+                        ref={syllabusEditorRef}
+                        initialContent=""
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="scholarship"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Scholarship Information</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Scholarship details" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+<FormField
+                control={form.control}
+                name="scholarship"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Scholarship Information</FormLabel>
+                    <div className="min-h-[200px] border rounded-md">
+                      <RichTextEditor
+                        key={`scholarship-${sheetOpenCounter}`}
+                        ref={scholarshipEditorRef}
+                        initialContent=""
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Content</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Main content about the university"
-                      className="min-h-[100px]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+<FormField
+                control={form.control}
+                name="content"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Content</FormLabel>
+                    <div className="min-h-[300px] border rounded-md">
+                      <RichTextEditor
+                        key={`content-${sheetOpenCounter}`}
+                        ref={contentEditorRef}
+                        initialContent=""
+                      />
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
 
             <div>
-              <FormLabel>Main Logo Image</FormLabel>
+              <FormLabel>University Banner</FormLabel>
               <div className="mt-1 flex items-center gap-4">
                 <Input
                   id="mainImage"
@@ -527,7 +563,7 @@ export default function UniversityCreate() {
                   <div className="mt-2">
                     <img
                       src={imagePreview}
-                      alt="Logo Preview"
+                      alt="University Banner"
                       className="h-20 w-20 object-cover rounded-md"
                     />
                   </div>
@@ -536,7 +572,7 @@ export default function UniversityCreate() {
             </div>
 
             <div>
-              <FormLabel>University Banner Image</FormLabel>
+              <FormLabel>University Logo</FormLabel>
               <div className="mt-1 flex items-center gap-4">
                 <Input
                   id="uniImage"
@@ -549,7 +585,7 @@ export default function UniversityCreate() {
                   <div className="mt-2">
                     <img
                       src={uniImagePreview}
-                      alt="Banner Preview"
+                      alt="University Preview"
                       className="h-20 w-20 object-cover rounded-md"
                     />
                   </div>
