@@ -53,8 +53,12 @@ export default function UniversityEdit({ id }: { id: string }) {
     const fetchUniversity = () => {
       startTransition(async () => {
         const response = await fetchUniversityById(id);
+        
         setImagePreview(response.data.university.image.url);
-        setUniImagePreview(response.data.university.uniLogo.url);
+        if(response.data.university.uniLogo?.url){
+    
+          setUniImagePreview(response.data.university.uniLogo.url);
+        }
         if (response.data) {
           form.reset({
             priority: response.data.university.priority,

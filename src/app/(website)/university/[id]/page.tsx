@@ -28,9 +28,13 @@ export default async function Page({params}:{
     const unidata= uniresponse.data.university
   return (
     <div className="container mx-auto space-y-4">
-      <CountryHeroSection image={null} logo={unidata.uniLogo?.url} altimage={unidata.image.url} address={unidata.address} title={unidata.name} alt={unidata.imageAlt} />
+      <CountryHeroSection image={null} logo={unidata.uniLogo?.url} altimage={unidata.image?.url} address={unidata.address} title={unidata.name} alt={unidata.imageAlt} />
       <div className="container md:px-12 px-4 space-y-4">
-      {(data.role=="user" && data.category!="none")  && <Button className='float-end cursor-pointer' variant={"outline"}><ApplyUniversity id={id}/></Button>}
+      {data && data.role && data.role === "user" && data.category !== "none" && (
+  <Button className='float-end cursor-pointer' variant={"outline"}>
+    <ApplyUniversity id={id}/>
+  </Button>
+)}
       
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">

@@ -18,6 +18,7 @@ export default function ChatDialog({
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
+  const subscriptionRef = useRef<any>(null);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -25,6 +26,9 @@ export default function ChatDialog({
   }, [messages]);
 
   useEffect(() => {
+    // Only set up subscription when the dialog is open
+    if (!open) return;
+
     const fetchMessages = async () => {
       const { data } = await supabase
         .from('message')
@@ -34,34 +38,64 @@ export default function ChatDialog({
       setMessages(data || []);
     };
 
-    const subscription = supabase
-      .channel('realtime-messages')
+    // Create a unique channel name using the channelId to prevent conflicts
+    const channelName = `messages-for-channel-${channelId}`;
+    
+    // Set up the subscription with the unique channel name
+    subscriptionRef.current = supabase
+      .channel(channelName)
       .on('postgres_changes', {
         event: 'INSERT',
         schema: 'public',
         table: 'message',
         filter: `channel_id=eq.${channelId}`
       }, (payload) => {
-        setMessages((msgs) => [...msgs, payload.new]);
+        // Check if this message is already in our state to prevent duplicates
+        setMessages((currentMessages) => {
+          if (!currentMessages.some(msg => msg.id === payload.new.id)) {
+            return [...currentMessages, payload.new];
+          }
+          return currentMessages;
+        });
       })
-      .subscribe();
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log(`Subscribed to channel: ${channelName}`);
+        }
+      });
 
     fetchMessages();
 
+    // Clean up subscription when component unmounts or dialog closes
     return () => {
-      supabase.removeChannel(subscription);
+      if (subscriptionRef.current) {
+        console.log(`Unsubscribing from channel: ${channelName}`);
+        supabase.removeChannel(subscriptionRef.current);
+      }
     };
-  }, [channelId]);
+  }, [channelId, open]);
 
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
     
-    await supabase.from('message').insert({
+    const { data, error } = await supabase.from('message').insert({
       channel_id: channelId,
       sender_id: currentUser.id,
       sender_name: currentUser.name,
       text: newMessage
-    });
+    }).select();
+    
+    if (error) {
+      console.error("Error sending message:", error);
+      return;
+    }
+    
+    // Immediately add the new message to the local state
+    // This gives immediate feedback to the sender
+    if (data && data[0]) {
+      setMessages((msgs) => [...msgs, data[0]]);
+    }
+    
     setNewMessage('');
   };
 
