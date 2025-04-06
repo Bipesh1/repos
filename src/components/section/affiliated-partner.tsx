@@ -1,9 +1,13 @@
 import { cn } from "@/lib/utils";
 import { Marquee } from "@/components/magicui/marquee";
-import uni1 from "@/assets/uni1.webp"
-import uni2 from "@/assets/uni2.webp"
-import uni3 from "@/assets/uni3.webp"
-import uni4 from "@/assets/uni4.webp"
+import uni1 from "@/assets/affuni1.png"
+import uni2 from "@/assets/affuni2.png"
+import uni3 from "@/assets/affuni3.png"
+import uni4 from "@/assets/affuni4.png"
+import uni5 from "@/assets/affuni5.png"
+import uni6 from "@/assets/affuni6.png"
+import uni7 from "@/assets/affuni7.png"
+import uni8 from "@/assets/affuni8.png"
 import { StaticImageData } from "next/image";
 import Image  from "next/image";
 
@@ -24,7 +28,16 @@ const reviews = [
     img: uni4,
   },
   {
-    img: uni1,
+    img: uni5,
+  },
+  {
+    img: uni6,
+  },
+  {
+    img: uni7,
+  },
+  {
+    img: uni8,
   },
 ];
 
