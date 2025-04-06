@@ -83,7 +83,7 @@ export default function SparkleFooter() {
         {/* Brief Description & Social Links */}
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-10 px-4">
           <p className="leading-6 opacity-90">
-            We help students achieve their dream of studying abroad by providing expert guidance on applications, visas, scholarships, and more.
+          Nepal’s first self-apply platform for admission to top universities in the USA. Save more with access to scholarships and full control over your applications.
           </p>
           <div className="mt-4">
             <SocialLinks />

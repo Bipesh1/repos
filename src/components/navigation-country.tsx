@@ -19,7 +19,7 @@ export function NavigationCountry() {
             <button className={`btn`}>
               <Link
                 href="#topuniversities"
-                className={`text-black/90 hover:text-secondary transition-colors }`}
+                className={`text-black/90 hover:text-secondary transition-colors `}
               >
                 Top Universities
               </Link>
@@ -28,7 +28,7 @@ export function NavigationCountry() {
             <button className={`btn`}>
               <Link
                 href="#faq"
-                className={`text-black/90 hover:text-secondary transition-colors }`}
+                className={`text-black/90 hover:text-secondary transition-colors `}
               >
                 Faq
               </Link>
@@ -38,9 +38,19 @@ export function NavigationCountry() {
                 href="#finances"
                 className={`text-black/90 hover:text-secondary transition-colors 
                     
-                }`}
+                `}
               >
                 Finances
+              </Link>
+            </button>
+            <button className={`btn`}>
+              <Link
+                href="#admission-requirements"
+                className={`text-black/90 hover:text-secondary transition-colors 
+                    
+                `}
+              >
+                Admission Requirements
               </Link>
             </button>
           </div>

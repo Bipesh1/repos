@@ -12,28 +12,28 @@ import Image from "next/image";
 export default function FaqStatic() {
   const faqs = [
     {
-      ques: "What are the general admission requirements for studying in the USA?",
-      ans: "Admission requirements typically include academic transcripts, standardized test scores (SAT/ACT for undergraduates, GRE/GMAT for graduates), English proficiency tests (TOEFL/IELTS), a statement of purpose, and recommendation letters.",
+      ques: "Is Going College is a consultancy?",
+      ans: "No, we’re not a traditional consultancy. GoingCollege is an online self-apply platform that lets you apply to U.S. universities of your choice—fully in your control, from start to finish.",
     },
     {
-      ques: "How much does it cost to study in the USA?",
-      ans: "Tuition fees vary, but on average, undergraduate programs cost between $20,000 and $50,000 per year, while graduate programs range from $25,000 to $60,000 per year. Living expenses can be around $10,000 to $15,000 annually.",
+      ques: "Is Going College free to use?",
+      ans: "You can search and shortlist universities for free. To apply, we charge a one-time software handling fee of NRs. 999—this gives you unlimited university applications and access to premium content.",
     },
     {
-      ques: "What are the visa requirements for studying in the UK?",
-      ans: "Students need a Tier 4 (General) student visa, which requires a Confirmation of Acceptance for Studies (CAS), proof of financial support, English proficiency test results, and a valid passport.",
+      ques: "Can you help me with the application steps?",
+      ans: "Yes, you’ll receive complete support throughout your application process. Our partnered universities will assist you with admissions, making your study in the USA journey simpler with our self-apply platform.",
     },
     {
-      ques: "Are there scholarships available for international students in the UK?",
-      ans: "Yes, scholarships like the Chevening Scholarship, Commonwealth Scholarship, and university-specific scholarships are available for international students based on academic merit and financial need.",
+      ques: "Why choose a self-apply platform over a consultancy?",
+      ans: "The U.S. government encourages students to self-apply instead of relying on traditional consultancies. Data shows that the visa success rate is higher for self-applicants. Additionally, applying on your own helps you gain confidence for the visa interview.",
     },
     {
-      ques: "What are the work opportunities for international students in Canada?",
-      ans: "International students in Canada can work up to 20 hours per week during academic sessions and full-time during scheduled breaks without needing a separate work permit.",
+      ques: "Do you guarantee admission and scholarships?",
+      ans: "No, we do not guarantee admission or scholarships. Admissions are based on university requirements. If you meet the criteria, we help improve your chances for both admission and scholarships.",
     },
     {
-      ques: "How can I apply for permanent residency in Canada after studying?",
-      ans: "Students can apply for a Post-Graduation Work Permit (PGWP) after completing their studies and later qualify for permanent residency through the Express Entry system or Provincial Nominee Program (PNP).",
+      ques: "Do you help with visa interview preparation?",
+      ans: "Yes, with our Premium Package, EduPilot provides assistance for visa interview preparation. Additionally, some of our partnered universities offer support to help you prepare for your visa interview.",
     },
   ];
 

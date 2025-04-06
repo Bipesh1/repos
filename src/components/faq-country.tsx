@@ -21,7 +21,7 @@ export default async function FaqCountry({id}:{
   return (
     <div>
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2">
-        <div className="py-16">
+        <div className="">
           <h2 className="text-2xl font-semibold">Explore <span className="text-secondary">Faq</span></h2>
           <Accordion type="single" collapsible className="w-[500px]">
             {response.data && response.data.map((faq:any, index:any) => (

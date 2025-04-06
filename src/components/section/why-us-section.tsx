@@ -43,7 +43,7 @@ export function WhyUsSection() {
               className="absolute -top-6 hidden xl:block lg:left-0 bg-accent text-foreground rounded-lg p-4 shadow-lg">
               <div className="flex items-center gap-2">
                 <CircleCheckBig className="h-5 w-5 text-secondary" />
-                <span className="text-sm font-medium">No.1 Consultancy</span>
+                <span className="text-sm font-medium">Truly Self Apply</span>
               </div>
             </motion.div>
 
@@ -54,7 +54,7 @@ export function WhyUsSection() {
               className="absolute -bottom-6 hidden xl:block right-0 bg-accent text-foreground rounded-lg p-4 shadow-lg">
               <div className="flex items-center gap-2">
               <CircleCheckBig className="h-5 w-5 text-secondary" />
-                <span className="text-sm font-medium">Streamlining the student flow</span>
+                <span className="text-sm font-medium">Assured Scholarships Upto 100%</span>
               </div>
             </motion.div>
           </motion.div>
@@ -67,18 +67,18 @@ export function WhyUsSection() {
             {[
               {
                 icon: FileQuestion,
-                title: "Why Going To College Abroad?",
-                description: "At Going College Abroad, we believe in making your dream of studying abroad a reality. With expert guidance, personalized consultation, and strong partnerships with top universities worldwide, we ensure a seamless admission process.",
+                title: "Single Application, Multiple Universities",
+                description: "Apply to your desired universities with a single application—and never miss out on scholarship opportunities. With single application, apply to multiple universities, grab scholarships and get accepted.",
               },
               {
                 icon: Search,
-                title: "Our Vision",
-                description: "To become the most trusted and respected consultancy for students aspiring to study abroad by providing exceptional guidance, transparent processes, and end-to-end support, helping students achieve academic excellence globally.",
+                title: "Realtime Updates",
+                description: "Easily track your application on your phone, get instant updates, and receive notifications when you're accepted or awarded a scholarship. 24 hours tracking and assistance available.",
               },
               {
                 icon: Eye,
-                title: "Our Mission",
-                description: "Our mission is to empower students with the right knowledge, resources, and mentorship to secure admissions in top universities worldwide. We aim to simplify the complex application process and provide career-oriented solutions to help students.",
+                title: "EduPilot",
+                description: "EduPilot will assist you throughout your process on achieving admission to scholarships. EduPilot will also helps you to connect with University team to boost your confidence for the visa interview.",
               },
             ].map((feature, index) => (
               <motion.div
