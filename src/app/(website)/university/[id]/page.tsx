@@ -45,9 +45,8 @@ export default async function Page({params}:{
                 </h2>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="space-y-4">
-               
-        
+              <div className="space-y-4 ql-editor">
+            
                    { parse(unidata.content)}
                 
               </div>
@@ -69,7 +68,7 @@ export default async function Page({params}:{
                 <h3 className="text-xl text-justify font-semibold text-secondary">
                   Requirements
                 </h3>
-                <span className='text-gray-500'>{unidata.content&&
+                <span className='text-gray-500 ql-editor'>{unidata.content&&
                 parse(unidata.syllabus)
             }</span>
                 
@@ -78,7 +77,7 @@ export default async function Page({params}:{
                 <h3 className="text-xl font-semibold text-secondary">
                   Scholarship
                 </h3>
-                <span className='text-gray-500'>{unidata.scholarship&&
+                <span className='text-gray-500 ql-editor'>{unidata.scholarship&&
                parse(unidata.scholarship)
             }
             </span>

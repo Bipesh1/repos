@@ -388,3 +388,29 @@ a {
 .signup-link a {
   text-decoration: underline;
 }
+.ql-editor h1 {
+  @apply text-4xl font-bold text-primary;
+}
+
+.ql-editor h2 {
+  @apply text-3xl font-semibold text-black;
+}
+
+.ql-editor h3 {
+  @apply text-2xl font-medium text-black;
+}
+
+.ql-editor p {
+  @apply text-base text-black leading-loose mb-4;
+}
+
+
+
+
+.ql-editor strong {
+  @apply font-semibold text-black;
+}
+
+.ql-editor a {
+  @apply text-primary underline;
+}
