@@ -1,19 +1,40 @@
 "use client";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter} from "next/navigation";
 import DOMPurify from "dompurify";
+import { useState, useEffect } from "react";
+import parse from "html-react-parser";
 
 export function CardDemo({ blog }: { blog: any }) {
   const router = useRouter();
-  const cardImage = blog.images[0].url;
+  console.log(blog.images)
+  const [cardImage, setCardImage] = useState<any>()
+  
+  // const cardImage = blog.images[0].url;
+  useEffect(() => {
+    if (blog?.images && blog.images.length > 0) {
+      const randomIndex = Math.floor(Math.random() * blog.images.length);
+      setCardImage(blog.images[randomIndex].url);
+    }
+  }, [blog]); 
 
   const handleRedirect = (id: string) => {
+    console.log("Redirecting");
     router.push(`blog/${id}`); // Navigate to the blog detail page
   };
 
+  const sliceTitle = (content:string)=>{
+    const maxLength = 15; // Set the maximum length to display
+    const truncatedTitle = content.length > maxLength
+                            ? content.slice(0, maxLength) + "..."
+                            : blog.content;
+    return truncatedTitle;
+  }
+
+
   const sliceDescription = (content:string)=>{
-    const maxLength = 65; // Set the maximum length to display
+    const maxLength = 30; // Set the maximum length to display
     const truncatedContent = content.length > maxLength
                             ? content.slice(0, maxLength) + "..."
                             : blog.content;
@@ -50,13 +71,15 @@ export function CardDemo({ blog }: { blog: any }) {
         {/* Fixed height image container */}
         <div className="relative w-full h-48 overflow-hidden">
           <div className="absolute inset-0 w-full h-full transform transition-transform duration-700 group-hover/card:scale-110">
-            <Image 
-              src={cardImage} 
-              alt={blog.title || "Blog image"} 
-              layout="fill"  
-              objectFit="cover"  
-              className="w-full h-full" 
-            />
+          {cardImage ? (
+  <Image 
+    src={cardImage} 
+    alt={blog.title || "Blog image"} 
+    layout="fill"  
+    objectFit="cover"  
+    className="w-full h-full" 
+  />
+) : null}
           </div>
           
           {/* Gradient Overlay that scales with image */}
@@ -75,7 +98,7 @@ export function CardDemo({ blog }: { blog: any }) {
           
           {/* Title */}
           <h1 className="font-bold text-xl text-gray-900 mb-3">
-            {blog.title}
+          {parse(sliceTitle(blog.title))}
           </h1>
           
           {/* Content */}
