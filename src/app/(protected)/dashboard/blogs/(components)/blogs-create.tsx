@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select";
 import { blogFormSchema } from "@/formschemas/blog";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderCircle, Save } from "lucide-react";
+import { LoaderCircle, Save, X } from "lucide-react";
 import { useState, useTransition, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -34,6 +34,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import dynamic from "next/dynamic";
 import { createBlog } from "@/app/(protected)/actions/blog";
+import Image from "next/image";
 
 // Dynamically import the RichTextEditor (Quill-based) with SSR disabled.
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
@@ -85,6 +86,8 @@ export default function BlogsCreate() {
   const handleImageRemove = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
     setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+    // Revoke the object URL to avoid memory leaks
+    URL.revokeObjectURL(imagePreviews[index]);
   };
 
   const onSubmit = async (values: z.infer<typeof blogFormSchema>) => {
@@ -250,30 +253,75 @@ export default function BlogsCreate() {
               )}
             />
 
-            {/* Image Upload Section */}
-            <div>
+            {/* Improved Image Upload Section */}
+            <div className="space-y-2">
               <FormLabel>Blog Images</FormLabel>
-              <label className="cursor-pointer border mx-3 text-sm px-3 py-1 rounded-md bg-gray-200 inline-block">
-                Choose Files
-                <Input type="file" multiple onChange={handleImageChange} className="hidden" />
-              </label>
-              <div className="flex gap-2 mt-2 flex-wrap">
-                {imagePreviews.map((preview, index) => (
-                  <div key={index} className="relative w-20 h-20">
-                    <img
-                      src={preview}
-                      alt="Preview"
-                      className="h-20 w-20 object-cover rounded-md"
-                    />
-                    <button
-                      type="button"
-                      className="absolute top-0 right-0 bg-red-600 text-white text-xs px-1 rounded-full"
-                      onClick={() => handleImageRemove(index)}
+              <div className="flex flex-col gap-4">
+                <label className="cursor-pointer flex flex-col items-center justify-center w-full p-4 border-2 border-dashed rounded-lg hover:bg-gray-50 transition-colors">
+                  <div className="flex flex-col items-center justify-center">
+                    <svg
+                      className="w-8 h-8 mb-2 text-gray-500"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 16"
                     >
-                      X
-                    </button>
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                      />
+                    </svg>
+                    <p className="text-sm text-gray-500">
+                      <span className="font-semibold">Click to upload</span> or drag and drop
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      PNG, JPG, JPEG (MAX. 5MB each)
+                    </p>
                   </div>
-                ))}
+                  <Input
+                    type="file"
+                    multiple
+                    onChange={handleImageChange}
+                    className="hidden"
+                    accept="image/png, image/jpeg, image/jpg"
+                  />
+                </label>
+
+                {/* Image Previews Grid */}
+                {imagePreviews.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {imagePreviews.map((preview, index) => (
+                      <div
+                        key={index}
+                        className="relative aspect-square rounded-md overflow-hidden border group"
+                      >
+                        <Image
+                          src={preview}
+                          alt={`Preview ${index + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100px, (max-width: 1200px) 150px, 200px"
+                        />
+                        <button
+                          type="button"
+                          className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                          onClick={() => handleImageRemove(index)}
+                          aria-label="Remove image"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                          <p className="text-white text-xs truncate">
+                            {images[index]?.name}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 

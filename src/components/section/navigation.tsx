@@ -143,7 +143,7 @@ export async function Navigation() {
                             </Link>
                           </li>
                           <li>
-                            <Link href="company/blog/67eba390755e391784ebcfaa" className="text-sm text-gray-600 hover:text-primary flex items-center hover:translate-x-1 transition-all duration-200">
+                            <Link href="/pricing" className="text-sm text-gray-600 hover:text-primary flex items-center hover:translate-x-1 transition-all duration-200">
                               Pricing
                             </Link>
                           </li>
