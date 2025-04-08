@@ -108,7 +108,7 @@ export async function Navigation() {
                             </Link>
                           </li>
                           <li>
-                            <Link href="/company/blog/67eec22bf2e1824c806fb309" className="text-sm text-gray-600 hover:text-primary flex items-center hover:translate-x-1 transition-all duration-200">
+                            <Link href="/article/67eec22bf2e1824c806fb309" className="text-sm text-gray-600 hover:text-primary flex items-center hover:translate-x-1 transition-all duration-200">
                               EduPilot
                             </Link>
                           </li>
