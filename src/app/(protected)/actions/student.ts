@@ -164,9 +164,10 @@ export async function getStudentsByAdmin(): Promise<ActionResponse<any[]>> {
               'Authorization': `Bearer ${token}`,
             }
         });
-          revalidatePath('/students')
-          return { data: response.data,msg:"Applied Succesfully", error: null, status:200 };
-        } catch (error: unknown) {
+        revalidatePath('/students')
+        return { data: response.data,msg:"Applied Succesfully", error: null, status:200 };
+      } catch (error: unknown) {
+          console.log(error)
           return { data: null, error:"An error occured"};
         }
       }
