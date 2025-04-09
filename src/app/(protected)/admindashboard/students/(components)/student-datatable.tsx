@@ -40,9 +40,9 @@ export function StudentDataTable({
       const courseIds = new Set();
       
       // Collect all course IDs
-      data.forEach(item => {
+      data.forEach((item:any) => {
         if (item.university && Array.isArray(item.university)) {
-          item.university.forEach(uni => {
+          item.university.forEach((uni:any) => {
             if (uni.course) {
               courseIds.add(uni.course);
             }
@@ -101,8 +101,8 @@ export function StudentDataTable({
         if (item.university && Array.isArray(item.university)) {
           // Get courses from all universities where course field exists
           const coursesInfo = item.university
-            .filter(uni => uni.course)
-            .map(uni => {
+            .filter((uni:any) => uni.course)
+            .map((uni:any) => {
               const courseName = courseNames[uni.course] || "Loading...";
               return courseName;
             });
