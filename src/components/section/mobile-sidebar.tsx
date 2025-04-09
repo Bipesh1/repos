@@ -112,7 +112,7 @@ export default async function MobileSidebar() {
                 <Link href="/company/about" className="block text-secondary/80 hover:text-primary">
                   About Us
                 </Link>
-                <Link href="/company/blog/67eba2b3755e391784ebcd99" className="block text-secondary/80 hover:text-primary">
+                <Link href="/article/67eec22bf2e1824c806fb309" className="block text-secondary/80 hover:text-primary">
                   EduPilot
                 </Link>
                 <Link href="/company/faq" className="block text-secondary/80 hover:text-primary">
@@ -130,7 +130,7 @@ export default async function MobileSidebar() {
                 <Link href="/company/blog" className="block text-secondary/80 hover:text-primary">
                   Blog
                 </Link>
-                <Link href="/company/blog/67eba390755e391784ebcfaa" className="block text-secondary/80 hover:text-primary">
+                <Link href="/pricing" className="block text-secondary/80 hover:text-primary">
                   Pricing
                 </Link>
               </div>
