@@ -6,17 +6,20 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import CarouselSlider from "@/components/Carousel";
 import parse from "html-react-parser";
+import { Share2 } from "lucide-react"; // ✅ Import the icon
 import 'quill/dist/quill.snow.css';
 
 export default function BlogDetail() {
   const params = useParams();
-  const id = params.id as string;
+  const slugandId = params.slugandId as string;
+  const id = slugandId?.split("~")[1];
   const [blog, setBlog] = useState<any>([]);
   const [mainImage, setMainImage] = useState("");
   const [carouselImages, setCarouselImages] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [formattedDate, setFormattedDate] = useState("");
   const [tagsArray, setTagsArray] = useState<any>([]);
+  const [copied, setCopied] = useState(false);
 
   const fetchBlogs = async () => {
     setIsLoading(true);
@@ -25,7 +28,6 @@ export default function BlogDetail() {
       const data = response.data || {};
       setBlog(data);
 
-      // Process images
       if (data?.images && data.images.length > 0) {
         const randomIndex = Math.floor(Math.random() * data.images.length);
         setMainImage(data.images[randomIndex].url);
@@ -40,9 +42,8 @@ export default function BlogDetail() {
         }
       }
 
-      setTagsArray(response.data.tags ? response.data.tags.split(",") : []);
+      setTagsArray(data.tags ? data.tags.split(",") : []);
 
-      // Format date
       if (data?.createdAt) {
         const date = new Date(data.createdAt);
         setFormattedDate(
@@ -57,6 +58,30 @@ export default function BlogDetail() {
       console.error("Error fetching blog:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleShare = async () => {
+    const shareUrl = window.location.href;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: blog.title,
+          text: "Check out this blog!",
+          url: shareUrl,
+        });
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (error) {
+        alert("Failed to copy the link.");
+      }
     }
   };
 
@@ -81,18 +106,22 @@ export default function BlogDetail() {
         </h1>
 
         {/* Author and Date Section */}
-        <div className="mb-6">
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <p className="text-base text-gray-600">
-            Published Date : {formattedDate}
+            Published Date: {formattedDate}
           </p>
+
+          {/* Share Button */}
+          <button
+            onClick={handleShare}
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
+          >
+            <Share2 className="h-4 w-4" />
+            {copied ? "Link copied!" : "Share this blog"}
+          </button>
         </div>
 
-        {/* Social Share Buttons */}
-        <div className="flex items-center space-x-2 mb-8">
-          {/* ...social buttons remain unchanged */}
-        </div>
-
-        {/* Main Image - Updated to show full image */}
+        {/* Main Image */}
         <div className="mb-8">
           {mainImage ? (
             <div className="w-full bg-white rounded overflow-hidden">
