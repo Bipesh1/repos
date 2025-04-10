@@ -1,5 +1,12 @@
-"use client"
-import { Calendar, Home, Inbox, LogOut, Search, Settings } from "lucide-react"
+"use client";
+import {
+  Calendar,
+  Home,
+  Inbox,
+  LogOut,
+  Search,
+  Settings,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -9,9 +16,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/sidebar";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -20,13 +27,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { useRouter } from "next/navigation"
-import { Logout } from "../actions/student"
-import { useTransition } from "react"
+} from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
+import { Logout } from "../actions/student";
+import { useTransition } from "react";
+import logo from "@/assets/logo.png";
+import Image from "next/image"; // ✅ Make sure to import this
 
-
-// Menu items.
 const items = [
   {
     title: "Home",
@@ -53,25 +60,29 @@ const items = [
     url: "/studentdashboard/applied",
     icon: Home,
   },
-]
+];
 
 export function AppSidebarStudents() {
-  const router= useRouter()
-  const [isPending,startTransition]= useTransition()
-  const handleLogout=()=>{
-    startTransition(async()=>{
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-      const response= await Logout()
-      if(response.status==200){
-        router.replace('/login')
+  const handleLogout = () => {
+    startTransition(async () => {
+      const response = await Logout();
+      if (response.status == 200) {
+        router.replace("/login");
       }
-    })
-    
-  }
+    });
+  };
 
   return (
     <Sidebar>
       <SidebarContent>
+        {/* ✅ Logo at the top */}
+        <div className="flex items-center justify-center py-6 px-4 border-b border-gray-200">
+          <Image src={logo} alt="Logo" width={100} height={40} priority />
+        </div>
+
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -94,7 +105,10 @@ export function AppSidebarStudents() {
         <div className="mt-auto p-4">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="ghost" className="w-full justify-start gap-2 text-red-500 hover:text-red-600 hover:bg-red-50">
+              <Button
+                variant="ghost"
+                className="w-full justify-start gap-2 text-red-500 hover:text-red-600 hover:bg-red-50"
+              >
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
               </Button>
@@ -103,16 +117,13 @@ export function AppSidebarStudents() {
               <DialogHeader>
                 <DialogTitle>Confirm Logout</DialogTitle>
                 <DialogDescription>
-                  Are you sure you want to logout? You'll need to sign in again to access your account.
+                  Are you sure you want to logout? You'll need to sign in again
+                  to access your account.
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
-               
-                <Button 
-                  variant="destructive"
-                  onClick={handleLogout}
-                >
-                   {isPending?"Logging out...":"Logout"}
+                <Button variant="destructive" onClick={handleLogout}>
+                  {isPending ? "Logging out..." : "Logout"}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -120,5 +131,5 @@ export function AppSidebarStudents() {
         </div>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }

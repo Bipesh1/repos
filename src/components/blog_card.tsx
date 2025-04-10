@@ -17,8 +17,9 @@ export function CardDemo({ blog }: { blog: any }) {
     }
   }, [blog]);
 
-  const handleRedirect = (id: string) => {
-    router.push(`blog/${id}`);
+  const handleRedirect = () => {
+    router.push(`/company/blog/${blog.slug}~${blog._id}`);
+
   };
 
   const sliceTitle = (content: string) => {
@@ -113,7 +114,7 @@ export function CardDemo({ blog }: { blog: any }) {
           {/* Read More */}
           <div
             className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors mt-auto"
-            onClick={() => handleRedirect(blog._id)}
+            onClick={() => handleRedirect()}
           >
             Read More
             <svg
