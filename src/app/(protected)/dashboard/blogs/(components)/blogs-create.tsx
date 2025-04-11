@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,26 +15,28 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger
+  SheetTrigger,
 } from "@/components/ui/sheet";
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
-import { courseFormSchema } from "@/formschemas/course";
+import { blogFormSchema } from "@/formschemas/blog";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderCircle, Save } from "lucide-react";
-import { useState, useTransition, useEffect, useRef } from "react";
+import { LoaderCircle, Save, X } from "lucide-react";
+import { useState, useTransition, useRef } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { getActiveUniversities } from "@/app/(protected)/actions/university";
-import { createCourse } from "@/app/(protected)/actions/course";
 import dynamic from "next/dynamic";
+import { createBlog } from "@/app/(protected)/actions/blog";
+import Image from "next/image";
 
-// Dynamically import the RichTextEditor with SSR disabled
+// Dynamically import the RichTextEditor (Quill-based) with SSR disabled.
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
   loading: () => (
@@ -44,90 +46,122 @@ const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ),
 });
 
-// Define the RichTextEditorHandle type
+// Define the RichTextEditorHandle type (as used in your RichTextEditor)
 type RichTextEditorHandle = {
   getContent: () => string;
 };
 
-export default function CourseCreate() {
+export default function BlogsCreate() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
-  const [universities, setUniversities] = useState<any>([]);
-  
-  // Add refs for the rich text editors
-  const scholarshipEditorRef = useRef<RichTextEditorHandle>(null);
-  const overviewEditorRef = useRef<RichTextEditorHandle>(null);
-  
-  const form = useForm<z.infer<typeof courseFormSchema>>({
-    resolver: zodResolver(courseFormSchema),
+  const [images, setImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+
+  // Create form with blogFormSchema
+  const form = useForm<z.infer<typeof blogFormSchema>>({
+    resolver: zodResolver(blogFormSchema),
     defaultValues: {
-      priority: "0",
+      priority: "",
       title: "",
-      universityId: "",
-      qualification: "",
-      earliestIntake: "",
-      deadline: "",
-      duration: "",
-      entryScore: 0,
-      fee: "",
-      scholarship: "",
-      tags:"",
-      category:"",
-      overview: "",
       slug: "",
+      category: "",
+      tags: "",
     },
   });
 
-  useEffect(() => {
-    const fetchUniversities = async () => {
-      try {
-        const response = await getActiveUniversities();
-        setUniversities(response.data);
-      } catch (error) {
-        console.error("Failed to fetch universities", error);
-      }
-    };
-    fetchUniversities();
-  }, []);
+  // Ref for our RichTextEditor (for the blog content)
+  const contentEditorRef = useRef<RichTextEditorHandle>(null);
 
-  const onSubmit = (values: z.infer<typeof courseFormSchema>) => {
+  // Handle multiple image file selection
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const newFiles = Array.from(files);
+      setImages((prev) => [...prev, ...newFiles]);
+      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+      setImagePreviews((prev) => [...prev, ...newPreviews]);
+    }
+  };
+
+  const handleImageRemove = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+    // Revoke the object URL to avoid memory leaks
+    URL.revokeObjectURL(imagePreviews[index]);
+  };
+
+  const onSubmit = async (values: z.infer<typeof blogFormSchema>) => {
     try {
-      startTransition(async () => {
-        // Get content from rich text editors
-        const scholarshipContent = scholarshipEditorRef.current?.getContent() || "";
-        const overviewContent = overviewEditorRef.current?.getContent() || "";
-        
-        // Create updated values with rich text content
-        const updatedValues = {
-          ...values,
-          scholarship: scholarshipContent,
-          overview: overviewContent
-        };
-        
-        const response = await createCourse(updatedValues);
-        
-        form.reset();
-        setIsOpen(false);
+      await startTransition(async () => {
+        const formData = new FormData();
+
+        // Append simple text fields
+        formData.append("priority", values.priority);
+        formData.append("title", values.title);
+        formData.append("slug", values.slug);
+        formData.append("category", values.category);
+        formData.append("tags", values.tags);
+
+        // Get content from the RichTextEditor
+        const contentFromEditor = contentEditorRef.current?.getContent() || "";
+        formData.append("content", contentFromEditor);
+
+        // Ensure at least one image is provided
+        if (images.length < 1) {
+          toast.error("Select at least one image.", {
+            position: "top-right",
+            autoClose: 5000,
+            theme: "light",
+          });
+          return;
+        }
+
+        images.forEach((file) => formData.append("images", file));
+
+        // Call your API endpoint
+        const response = await createBlog(formData);
+
+        // Check the response structure and display a toast
+        if (response.data?.success === true || response.msg === "Created Succesfully") {
+          form.reset();
+          setImages([]);
+          setImagePreviews([]);
+          setIsOpen(false);
+          toast.success("Blog created successfully", {
+            position: "top-right",
+            autoClose: 3000,
+            theme: "light",
+          });
+        } else {
+          toast.error("Blog Creation error. Please check your data.", {
+            position: "top-right",
+            autoClose: 5000,
+            theme: "light",
+          });
+        }
       });
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Error creating blog:", error);
+      toast.error("Failed to create blog", {
+        position: "top-right",
+        autoClose: 5000,
+        theme: "light",
+      });
     }
   };
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <ToastContainer />
       <SheetTrigger className="float-end text-primary border px-2 py-1 rounded-md hover:text-primary/70 transition-all">
-        Create Course
+        Create Blog
       </SheetTrigger>
-      <SheetContent className="overflow-y-scroll w-full max-w-md sm:max-w-lg">
+      <SheetContent className="overflow-y-scroll">
         <SheetHeader>
-          <SheetTitle>Create Course</SheetTitle>
+          <SheetTitle>Add Blog</SheetTitle>
         </SheetHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 py-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-10">
             <FormField
               control={form.control}
               name="priority"
@@ -135,69 +169,34 @@ export default function CourseCreate() {
                 <FormItem>
                   <FormLabel>Priority</FormLabel>
                   <FormControl>
-                    <Input
-                      type="string"
-                      placeholder="0"
-                      {...field}
-                    />
+                    <Input placeholder="Priority of this blog" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Course Title*</FormLabel>
+                  <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Bachelor of Computer Science"
-                      {...field}
-                    />
+                    <Input placeholder="Blog Title" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
             <FormField
               control={form.control}
               name="slug"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Slug*</FormLabel>
+                  <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="bachelor-of-computer-science"
-                      {...field}
-                    />
+                    <Input placeholder="Slug" {...field} />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="universityId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>University</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a university" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {universities.map((university: any) => (
-                        <SelectItem key={university._id} value={university._id.toString()}>
-                          {university.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -210,155 +209,28 @@ export default function CourseCreate() {
                   <FormLabel>Category</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="bachelor">Bachelor</SelectItem>
-                      <SelectItem value="master">Master</SelectItem>
+                      <SelectItem value="General">General</SelectItem>
+                      <SelectItem value="Premium">Premium</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+            {/* Rich Text Editor for Blog Content */}
             <FormField
               control={form.control}
-              name="qualification"
+              name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Qualification</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Bachelor's Degree"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="earliestIntake"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Earliest Intake</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="September 2025"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="deadline"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Application Deadline</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="June 15, 2025"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="duration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Duration</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="4 years"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="entryScore"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Entry Score/Requirements</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="3.0(provide a number)"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            
-            <FormField
-              control={form.control}
-              name="fee"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tuition Fee</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="10000(provide a number)"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            {/* Scholarship Field with Rich Text Editor */}
-            <FormField
-              control={form.control}
-              name="scholarship"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Scholarship Information</FormLabel>
-                  <FormControl>
-                    <div className="min-h-[200px] border rounded-md">
-                      <RichTextEditor
-                        ref={scholarshipEditorRef}
-                        initialContent={field.value}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            {/* Overview Field with Rich Text Editor */}
-            <FormField
-              control={form.control}
-              name="overview"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Course Overview</FormLabel>
+                  <FormLabel>Content</FormLabel>
                   <FormControl>
                     <div className="min-h-[300px] border rounded-md">
                       <RichTextEditor
-                        ref={overviewEditorRef}
+                        ref={contentEditorRef}
                         initialContent={field.value}
                       />
                     </div>
@@ -367,7 +239,6 @@ export default function CourseCreate() {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="tags"
@@ -375,23 +246,86 @@ export default function CourseCreate() {
                 <FormItem>
                   <FormLabel>Tags</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="tag1,tag2"
-                      {...field}
-                    />
+                    <Input placeholder="tag1, tag2, ..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
-            <Button size={"sm"} disabled={isPending} type="submit" className="mt-6">
-              {isPending ? (
-                <LoaderCircle size={16} className="animate-spin mr-2" />
-              ) : (
-                <Save size={16} className="mr-2" />
+
+            {/* Image Upload Section */}
+            <div className="space-y-2">
+              <FormLabel>Blog Images</FormLabel>
+              <label className="cursor-pointer flex flex-col items-center justify-center w-full p-4 border-2 border-dashed rounded-lg hover:bg-gray-50 transition-colors">
+                <div className="flex flex-col items-center justify-center">
+                  <svg
+                    className="w-8 h-8 mb-2 text-gray-500"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 16"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                    />
+                  </svg>
+                  <p className="text-sm text-gray-500">
+                    <span className="font-semibold">Click to upload</span> or drag and drop
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    PNG, JPG, JPEG (MAX. 5MB each)
+                  </p>
+                </div>
+                <Input
+                  type="file"
+                  multiple
+                  onChange={handleImageChange}
+                  className="hidden"
+                  accept="image/png, image/jpeg, image/jpg"
+                />
+              </label>
+
+              {/* Image Previews Grid */}
+              {imagePreviews.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                  {imagePreviews.map((preview, index) => (
+                    <div
+                      key={index}
+                      className="relative aspect-square rounded-md overflow-hidden border group"
+                    >
+                      <Image
+                        src={preview}
+                        alt={`Preview ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100px, (max-width: 1200px) 150px, 200px"
+                      />
+                      <button
+                        type="button"
+                        className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={() => handleImageRemove(index)}
+                        aria-label="Remove image"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                        <p className="text-white text-xs truncate">
+                          {images[index]?.name}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               )}
-              Create Blog
+            </div>
+
+            <Button size={"sm"} disabled={isPending} type="submit" className="mt-6">
+              {isPending ? <LoaderCircle size={16} className="animate-spin mr-2" /> : <Save size={16} className="mr-2" />}
+              Add Blog
             </Button>
           </form>
         </Form>
