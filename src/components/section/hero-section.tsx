@@ -55,12 +55,13 @@ export default function HeroSection() {
         className='flex bg-primary flex-col justify-center px-6 py-8 sm:p-10 md:p-8 lg:p-12 text-center md:text-5xl font-semibold space-y-4 sm:space-y-6 md:space-y-8'
       >
         <TypingAnimation className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-4xl">
-          The Best Consultancy in the Town
+        Self-Apply. Get Accepted. Achieve More.
+
         </TypingAnimation>
         
         <p className='text-white font-light text-sm sm:text-base'>
-          Join us in this journey. The step to make your flow better is 
-          simpler than you imagine.
+        Apply to USA universities with our self-application platform and get assured scholarships with a single application.
+
         </p>
         
         <div className="w-full flex justify-center">

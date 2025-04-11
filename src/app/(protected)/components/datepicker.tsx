@@ -50,12 +50,22 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={handleSelect}
-          initialFocus
-        />
+      <Calendar
+  mode="single"
+  selected={date}
+  onSelect={handleSelect}
+  initialFocus
+  captionLayout="dropdown"
+  fromYear={1950}
+  toYear={new Date().getFullYear()}
+  classNames={{
+    caption_label: "hidden", // Hide default caption label
+    dropdown: "bg-white mt-2 text-black border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary", // Custom dropdown style
+  }}
+/>
+
+
+
       </PopoverContent>
     </Popover>
   );

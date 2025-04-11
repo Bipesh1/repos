@@ -46,7 +46,7 @@ const items = [
     icon: Home,
   },
   {
-    title: "Counselor",
+    title: "EduPilot",
     url: "/studentdashboard/counselor",
     icon: Home,
   },
