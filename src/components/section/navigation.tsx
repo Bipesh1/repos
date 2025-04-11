@@ -164,12 +164,12 @@ export async function Navigation() {
                         <h3 className="font-medium text-primary mb-3 text-sm uppercase tracking-wide">Guide</h3>
                         <ul className="space-y-2">
                           <li>
-                            <Link href="/#top-universities" className="text-sm text-gray-600 hover:text-primary flex items-center hover:translate-x-1 transition-all duration-200">
+                            <Link href="/company/blog/top-universities-in-usa-for-nepali-students~67f80464327ca2a732f32f0a " className="text-sm text-gray-600 hover:text-primary flex items-center hover:translate-x-1 transition-all duration-200">
                               Top Universities
                             </Link>
                           </li>
                           <li>
-                            <Link href="/company/blog/scholarship~67dfbf97b3691ca0b847fa70" className="text-sm text-gray-600 hover:text-primary flex items-center hover:translate-x-1 transition-all duration-200">
+                            <Link href="/company/blog/study-in-usa-with-scholarships-for-nepali-students~67f7fcf3f30adbf521cc3e12" className="text-sm text-gray-600 hover:text-primary flex items-center hover:translate-x-1 transition-all duration-200">
                               Scholarships
                             </Link>
                           </li>
