@@ -2,15 +2,17 @@ import React from 'react'
 import { LuCircleArrowLeft, LuUser, LuMail, LuPhone, LuTag } from "react-icons/lu";
 import { checkUser } from '../actions/user';
 import StudentProfileEdit from './components/student-profile-edit';
+import { StudentProfileDialog } from './components/student-profile-dialog'; // ✅ Import the form dialog
+
 export const dynamic = 'force-dynamic';
 
 export default async function page() {
-   const response = await checkUser()
-   const data = response.data || {}
+  const response = await checkUser();
+  const data = response.data || {};
 
   return (
     <div className='container mx-auto px-4 py-8 space-y-6'>
-      <div className='flex items-center justify-between'>
+      <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
         <div>
           <p className='text-2xl font-bold text-primary'>
             Welcome, <span className='text-secondary'>{data?.userName}</span>
@@ -19,7 +21,9 @@ export default async function page() {
             Manage your student profile and information
           </p>
         </div>
-        <LuCircleArrowLeft className='text-3xl text-primary hover:text-secondary transition-colors' />
+
+        {/* ✅ Fill Your Application Button here */}
+        <StudentProfileDialog />
       </div>
 
       <div className='grid md:grid-cols-3 gap-6'>
@@ -30,14 +34,15 @@ export default async function page() {
               <LuUser className='text-6xl text-primary' />
             </div>
             <h2 className='text-xl font-semibold text-secondary'>
-              {data.userName}
+              {data.mobile}
             </h2>
             <p className='text-gray-500 mt-2'>{data.role}</p>
           </div>
         </div>
 
         {/* Contact Information */}
-        <div className='md:col-span-2 bg-white shadow-lg rounded-lg p-6 border border-gray-100 space-y-4'>
+        <div className='md:col-span-2 
+        bg-white shadow-lg rounded-lg p-6 border border-gray-100 space-y-4'>
           <h3 className='text-lg font-semibold text-primary border-b pb-2'>
             Contact Information
           </h3>
@@ -64,7 +69,9 @@ export default async function page() {
               <div>
                 <p className='text-gray-600'>Category</p>
                 <p className='font-medium text-secondary'>
-                  {data.category || 'Not Specified'}
+     
+                  {data.category=="1000-tier" &&"Starter Package"}
+                  {data.category=="25000-tier" &&"Achiever Package"}
                 </p>
               </div>
             </div>
@@ -84,8 +91,7 @@ export default async function page() {
             <p className='text-gray-500 text-sm'>
               Profile last updated: {new Date().toLocaleDateString()}
             </p>
-             <StudentProfileEdit id={data._id}/>
-           
+            <StudentProfileEdit id={data._id} />
           </div>
         </div>
       </div>

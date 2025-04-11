@@ -9,7 +9,7 @@ export const courseFormSchema = z.object({
   deadline: z.string().optional(),
   duration: z.string().optional(),
   entryScore: z.coerce.number().optional(),
-  fee: z.coerce.number().optional(),
+  fee: z.coerce.string().optional(),
   scholarship: z.string().optional(),
   overview: z.string().optional(),
   category: z.string().optional(),

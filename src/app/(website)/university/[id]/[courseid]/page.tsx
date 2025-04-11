@@ -7,6 +7,7 @@ import InquiryForm from "@/components/inquiryform";
 import { fetchCourseById } from '@/app/(protected)/actions/course';
 import CourseInfoCard from '@/components/courseinfocard';
 import { NavigationCourse } from '@/components/navigation-courses';
+import parse from "html-react-parser"
 
 export default async function Page({params}:{
     params:{
@@ -41,7 +42,7 @@ export default async function Page({params}:{
                   Course Overview
                 </h3>
                 {coursedata.overview&&
-                <p className='text-gray-400 text-base text-justify'>{coursedata.overview}</p>
+              <span>{parse(coursedata.overview)}</span>
             }
                 
           </div>
@@ -50,7 +51,7 @@ export default async function Page({params}:{
                   Scholarship
                 </h3>
                 {coursedata.scholarship&&
-                <p className='text-gray-400 text-justify text-base'>{coursedata.scholarship}</p>
+                <span>{parse(coursedata.scholarship)}</span>
             }
                 
           </div>

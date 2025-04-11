@@ -300,7 +300,9 @@ function Carousel({ data }: { data: UniversityData[] }) {
                   <h2 className="text-lg font-semibold text-gray-800">{itemData.name}</h2>
                   <p className="text-sm text-gray-600">{itemData.country.name}</p>
                   <p className="text-sm text-gray-600">
-                    {itemData.category === "gold" ? "Gold" : "Ivy"}
+                    {itemData.category === "gold" && "Gold"}
+                    {itemData.category === "ivy" && "IVY"}
+                    {itemData.category === "general" && "General"}
                   </p>
 
                   {itemData.address && (

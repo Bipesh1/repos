@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Sheet,
   SheetContent,
@@ -28,16 +27,36 @@ import {
 import { courseFormSchema } from "@/formschemas/course";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle, Save } from "lucide-react";
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { getActiveUniversities } from "@/app/(protected)/actions/university";
 import { createCourse } from "@/app/(protected)/actions/course";
+import dynamic from "next/dynamic";
+
+// Dynamically import the RichTextEditor with SSR disabled
+const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[200px] flex items-center justify-center">
+      <LoaderCircle className="animate-spin" />
+    </div>
+  ),
+});
+
+// Define the RichTextEditorHandle type
+type RichTextEditorHandle = {
+  getContent: () => string;
+};
 
 export default function CourseCreate() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const [universities, setUniversities] = useState<any>([]);
+  
+  // Add refs for the rich text editors
+  const scholarshipEditorRef = useRef<RichTextEditorHandle>(null);
+  const overviewEditorRef = useRef<RichTextEditorHandle>(null);
   
   const form = useForm<z.infer<typeof courseFormSchema>>({
     resolver: zodResolver(courseFormSchema),
@@ -50,7 +69,7 @@ export default function CourseCreate() {
       deadline: "",
       duration: "",
       entryScore: 0,
-      fee: 0,
+      fee: "",
       scholarship: "",
       tags:"",
       category:"",
@@ -74,10 +93,18 @@ export default function CourseCreate() {
   const onSubmit = (values: z.infer<typeof courseFormSchema>) => {
     try {
       startTransition(async () => {
+        // Get content from rich text editors
+        const scholarshipContent = scholarshipEditorRef.current?.getContent() || "";
+        const overviewContent = overviewEditorRef.current?.getContent() || "";
         
+        // Create updated values with rich text content
+        const updatedValues = {
+          ...values,
+          scholarship: scholarshipContent,
+          overview: overviewContent
+        };
         
-        
-        const response = await createCourse(values);
+        const response = await createCourse(updatedValues);
         
         form.reset();
         setIsOpen(false);
@@ -183,7 +210,7 @@ export default function CourseCreate() {
                   <FormLabel>Category</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a university" />
+                      <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="bachelor">Bachelor</SelectItem>
@@ -301,6 +328,7 @@ export default function CourseCreate() {
               )}
             />
             
+            {/* Scholarship Field with Rich Text Editor */}
             <FormField
               control={form.control}
               name="scholarship"
@@ -308,16 +336,19 @@ export default function CourseCreate() {
                 <FormItem>
                   <FormLabel>Scholarship Information</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Available scholarships and financial aid options"
-                      {...field}
-                    />
+                    <div className="min-h-[200px] border rounded-md">
+                      <RichTextEditor
+                        ref={scholarshipEditorRef}
+                        initialContent={field.value}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             
+            {/* Overview Field with Rich Text Editor */}
             <FormField
               control={form.control}
               name="overview"
@@ -325,18 +356,19 @@ export default function CourseCreate() {
                 <FormItem>
                   <FormLabel>Course Overview</FormLabel>
                   <FormControl>
-                    <Textarea
-                      placeholder="Detailed description of the course"
-                      className="min-h-[100px]"
-                      {...field}
-                    />
+                    <div className="min-h-[300px] border rounded-md">
+                      <RichTextEditor
+                        ref={overviewEditorRef}
+                        initialContent={field.value}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-<FormField
+            <FormField
               control={form.control}
               name="tags"
               render={({ field }) => (
@@ -352,8 +384,6 @@ export default function CourseCreate() {
                 </FormItem>
               )}
             />
-            
-           
             
             <Button size={"sm"} disabled={isPending} type="submit" className="mt-6">
               {isPending ? (

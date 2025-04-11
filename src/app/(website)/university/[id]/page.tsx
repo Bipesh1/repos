@@ -39,10 +39,12 @@ export default async function Page({params}:{
       
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
-            <AccordionTrigger>
-            <h2 className="text-xl">
+          <h2 className="text-xl">
                   About Us
                 </h2>
+            <AccordionTrigger>
+           
+            <p>Go through the about section to know more about the university.</p>
             </AccordionTrigger>
             <AccordionContent>
               <div className="space-y-4 ql-editor">
