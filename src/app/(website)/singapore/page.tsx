@@ -96,14 +96,16 @@ export default async function page({
         </Accordion>
       </div>
       <NavigationCountry />
-      <div className="container mx-auto md:px-12 px-4 scroll-smooth space-x-0 md:space-x-32 grid grid-cols-1 lg:grid-cols-2">
-        <div className="space-y-10">
-          <div className="" id="topuniversities">
-            <h2 className="text-xl font-semibold text-primary">
-              Top Universities
-            </h2>
-            <TopUniversities id={id} />
-          </div>
+       <div className="container mx-auto md:px-12 px-4" id="topuniversities">
+              <h2 className="text-xl font-semibold text-primary">
+                Top Universities
+              </h2>
+              <TopUniversities id={id} />
+            </div>
+      
+          <div className="container mx-auto md:px-12 px-4 scroll-smooth grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-10">
+         
            <div className="" id="faq">
                   <FaqCountry id={id} />
           </div>
@@ -301,7 +303,7 @@ export default async function page({
             </div>
           </div>
         </div>
-        <div>
+        <div className="mx-auto">
           <InquiryForm />
         </div>
       </div>

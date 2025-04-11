@@ -29,7 +29,7 @@ export default async function Page({params}:{
           courseFee={coursedata.fee} 
           courseDuration={coursedata.duration} 
           courseEntryScore={coursedata.entryScore}
-        />
+      />
 
       </div>
       <NavigationCourse/>

@@ -391,7 +391,7 @@ export default function CourseCreate() {
               ) : (
                 <Save size={16} className="mr-2" />
               )}
-              Create Course
+              Create Blog
             </Button>
           </form>
         </Form>

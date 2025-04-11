@@ -75,7 +75,7 @@ export default async function page({
         <li>
           <span className="text-primary font-bold">1,000,000+ INTERNATIONAL STUDENTS: </span>
           <span className="text-secondary">
-            With more than 1,000,000 students, the USA has the world’s largest international student population.
+            With more than 1,000,000 students, the USA has the world's largest international student population.
           </span>
         </li>
         <li>
@@ -85,9 +85,9 @@ export default async function page({
           </span>
         </li>
         <li>
-          <span className="text-primary font-bold">WORLD’S TOP UNIVERSITIES: </span>
+          <span className="text-primary font-bold">WORLD'S TOP UNIVERSITIES: </span>
           <span className="text-secondary">
-            Approximately 50% of the world’s top universities are in the USA.
+            Approximately 50% of the world's top universities are in the USA.
           </span>
         </li>
       </ul>
@@ -145,24 +145,29 @@ export default async function page({
         </Accordion>
       </div>
       <NavigationCountry />
-      <div className="container mx-auto md:px-12 px-4 scroll-smooth space-x-0 md:space-x-32 grid grid-cols-1 lg:grid-cols-2">
-        <div className="space-y-10">
-          <div className="" id="topuniversities">
-            <h2 className="text-xl font-semibold text-primary">
-              Top Universities
-            </h2>
-            <TopUniversities id={id} />
-          </div>
-          <div className="" id="faq">
+      
+      {/* Full width Top Universities section */}
+      <div className="container mx-auto md:px-12 px-4" id="topuniversities">
+        <h2 className="text-xl font-semibold text-primary">
+          Top Universities
+        </h2>
+        <TopUniversities id={id} />
+      </div>
+
+      {/* Two-column layout for other content */}
+      <div className="container mx-auto md:px-12 px-4 scroll-smooth grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left column (2/3 width) */}
+        <div className="lg:col-span-2 space-y-10">
+          <div id="faq">
             <FaqCountry id={id} />
           </div>
-          <div className="" id="finances">
+          <div id="finances">
             <div className="container py-8 space-y-8">
               <h2 className="text-2xl font-semibold">Cost of <span className="text-secondary">Education</span></h2>
 
               <p className="text-gray-700">
                 The cost of studying in the USA varies widely depending on the
-                type of institution, degree programme, and location. Here’s a
+                type of institution, degree programme, and location. Here's a
                 summary of the key expenses:
               </p>
 
@@ -243,7 +248,7 @@ export default async function page({
             <span className="font-semibold">Letters of Recommendation:</span> Typically, 2-3 recommendation letters from teachers, school counselors, or mentors.
           </li>
           <li>
-            <span className="font-semibold">Statement of Purpose/Essays:</span> Write a personal statement or essays explaining why you want to study in the U.S. and why you’ve chosen a particular program and university.
+            <span className="font-semibold">Statement of Purpose/Essays:</span> Write a personal statement or essays explaining why you want to study in the U.S. and why you've chosen a particular program and university.
           </li>
         </ul>
       </div>
@@ -255,13 +260,13 @@ export default async function page({
         </h3>
         <ul className="list-disc ml-6 space-y-2 text-gray-500">
           <li>
-            <span className="font-semibold">Bachelor’s Degree Transcripts:</span> Submit transcripts from your previous undergraduate studies.
+            <span className="font-semibold">Bachelor's Degree Transcripts:</span> Submit transcripts from your previous undergraduate studies.
           </li>
           <li>
             <span className="font-semibold">GRE/GMAT Scores:</span> Some graduate programs (especially in business or engineering) require the GRE or GMAT.
           </li>
           <li>
-            <span className="font-semibold">TOEFL/IELTS:</span> If your undergraduate education was in a non-English language, you’ll need to prove your English proficiency.
+            <span className="font-semibold">TOEFL/IELTS:</span> If your undergraduate education was in a non-English language, you'll need to prove your English proficiency.
           </li>
           <li>
             <span className="font-semibold">Statement of Purpose (SOP):</span> A detailed essay explaining your academic background, career goals, and why you want to pursue graduate studies.
@@ -276,7 +281,9 @@ export default async function page({
       </div>
     </div>
         </div>
-        <div>
+        
+        {/* Right column (1/3 width) - Form stays here */}
+        <div className="lg:col-span-1 mx-auto">
           <InquiryForm />
         </div>
       </div>
