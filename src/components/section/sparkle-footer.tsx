@@ -4,54 +4,53 @@ import Link from "next/link";
 import { Sparkles } from "../ui/sparkle";
 import SocialLinks from "./social-links";
 import logo from "@/assets/logo.png";
+import { getActiveCountries } from "@/app/(protected)/actions/country";
 
-// Navigation links provided from your navigation bar
+// Updated navigation links to match navigation.tsx
 const footerNavigation = {
-  countries: [
-    { name: "USA", href: "/countries/usa" },
-    { name: "UK", href: "/countries/uk" },
-    { name: "Canada", href: "/countries/canada" },
-    { name: "Australia", href: "/countries/australia" },
-  ],
+
   company: [
     { name: "About Us", href: "/company/about" },
-    { name: "EduPilot", href: "/company/blog/67eba2b3755e391784ebcd99" },
+    { name: "EduPilot", href: "/article/edupilot-nepal-for-self-apply-to-usa~67eec22bf2e1824c806fb309" },
     { name: "FAQ", href: "/company/faq" },
-    { name: "Why Self Apply?", href: "/company/blog/67eba2fd755e391784ebcddc" },
+    { name: "Why Self Apply?", href: "/company/blog/why-self-apply~67eba2fd755e391784ebcddc" },
     { name: "Why Us?", href: "/company/why-us" },
-    { name: "Media Coverage", href: "/company/blog/67eba33c755e391784ebce20" },
+    { name: "Media Coverage", href: "/company/blog/media-coverage~67eba33c755e391784ebce20" },
     { name: "Blog", href: "/company/blog" },
-    { name: "Pricing", href: "/company/blog/67eba390755e391784ebcfaa" },
+    { name: "Pricing", href: "/pricing" },
   ],
   applyUSA: [
-    { name: "Top Universities", href: "/#top-universities" },
-    { name: "Scholarships", href: "/company/blog/67dfbf97b3691ca0b847fa70" },
-    { name: "For Working Professionals", href: "/company/blog/67e510195644b83ab5a2920e" },
-    { name: "Visa Guide", href: "/company/blog/67dfc007b3691ca0b847faf2" },
-    { name: "Bachelor", href: "/company/blog/67dfc18bb3691ca0b847fb43" },
-    { name: "Masters", href: "/company/blog/67dfc239b3691ca0b847fb96" },
-    { name: "DBA", href: "/company/blog/67dfc053b3691ca0b847fb05" },
-    { name: "PhD", href: "/company/blog/67dfc32fb3691ca0b847fbca" },
-    { name: "Job Opportunities", href: "/company/blog/67dfc8acb3691ca0b847fd51" },
-    { name: "Post Study Work", href: "/company/blog/67dfc397b3691ca0b847fc1b" },
-    { name: "Apply for Greencard", href: "/company/blog/67e10c80318f258e0d32c274" },
-    { name: "On Campus Job", href: "/company/blog/67e10cd8318f258e0d32c295" },
+    { name: "Top Universities", href: "/company/blog/top-universities-in-usa-for-nepali-students~67f80464327ca2a732f32f0a" },
+    { name: "Scholarships", href: "/company/blog/study-in-usa-with-scholarships-for-nepali-students~67f7fcf3f30adbf521cc3e12" },
+    { name: "For Working Professionals", href: "/company/blog/for-working-professional~67e510195644b83ab5a2920e" },
+    { name: "Visa Guide", href: "/company/blog/visa-guide~67dfc007b3691ca0b847faf2" },
+    { name: "Bachelor", href: "/company/blog/bachelor~67dfc18bb3691ca0b847fb43" },
+    { name: "Masters", href: "/company/blog/masters-section~67dfc239b3691ca0b847fb96" },
+    { name: "DBA", href: "/company/blog/dba~67dfc053b3691ca0b847fb05" },
+    { name: "PhD", href: "/company/blog/phd~67dfc32fb3691ca0b847fbca" },
+    { name: "Job Opportunities", href: "/company/blog/job-opportunities~67dfc8acb3691ca0b847fd51" },
+    { name: "Post Study Work", href: "/company/blog/postal-study-work~67dfc397b3691ca0b847fc1b" },
+    { name: "Apply for Greencard", href: "/company/blog/apply-for-greencard~67e10c80318f258e0d32c274" },
+    { name: "On Campus Job", href: "/company/blog/on-campus-job~67e10cd8318f258e0d32c295" },
   ],
   resources: [
-    { name: "Course Advice", href: "/company/blog/67e50dc45644b83ab5a29086" },
-    { name: "Education Loan", href: "/company/blog/67e50e105644b83ab5a290b4" },
-    { name: "Meet Alumni", href: "/company/blog/67e50e7c5644b83ab5a290e8" },
-    { name: "Assured Scholarship", href: "/company/blog/67e50ebf5644b83ab5a29120" },
-    { name: "Express Admission", href: "/company/blog/67e50ef75644b83ab5a2915d" },
-    { name: "MBBS", href: "/company/blog/67e50f365644b83ab5a29197" },
-    { name: "For Working Professionals", href: "/company/blog/67e510195644b83ab5a2920e" },
-    { name: "For Nursing", href: "/company/blog/67e50f6d5644b83ab5a291d2" },
+    { name: "Course Advice", href: "/company/blog/course-advice~67e50dc45644b83ab5a29086" },
+    { name: "Education Loan", href: "/company/blog/education-loan~67e50e105644b83ab5a290b4" },
+    { name: "Meet Alumni", href: "/company/blog/meet-alumni~67e50e7c5644b83ab5a290e8" },
+    { name: "Assured Scholarship", href: "/company/blog/assured-scholarship~67e50ebf5644b83ab5a29120" },
+    { name: "Express Admission", href: "/company/blog/express-admission~67e50ef75644b83ab5a2915d" },
+    { name: "MBBS", href: "/company/blog/mbbs~67e50f365644b83ab5a29197" },
+    { name: "For Nursing", href: "/company/blog/nursing~67e50f6d5644b83ab5a291d2" },
   ],
 };
 
-// "Locate Us" addresses
-
-export default function SparkleFooter() {
+export default async function SparkleFooter() {
+    const countriesResponse = await getActiveCountries().catch(error => {
+      console.error("Error fetching countries:", error);
+      return { data: [] };
+    });
+    
+    const countries = countriesResponse.data || [];
   return (
     <div id="contact" className="w-screen overflow-hidden bg-primary text-white">
       {/* Decorative Background with Sparkles */}
@@ -83,7 +82,7 @@ export default function SparkleFooter() {
         {/* Brief Description & Social Links */}
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-10 px-4">
           <p className="leading-6 opacity-90">
-          Nepal’s first self-apply platform for admission to top universities in the USA. Save more with access to scholarships and full control over your applications.
+            Nepal's first self-apply platform for admission to top universities in the USA. Save more with access to scholarships and full control over your applications.
           </p>
           <div className="mt-4">
             <SocialLinks />
@@ -91,20 +90,21 @@ export default function SparkleFooter() {
         </div>
 
         {/* Navigation Links Columns */}
-        <div className="grid mx-auto  grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid mx-auto grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* Countries Column */}
           <div>
             <h2 className="text-base font-semibold mb-3">Countries</h2>
             <ul className="space-y-2">
-              {footerNavigation.countries.map((link) => (
-                <li key={link.name}>
-                  <Link href={link.href} className="text-sm opacity-90 hover:opacity-100 transition-all">
-                    {link.name}
+              {countries.map((country) => (
+                <li key={country._id}>
+                  <Link href={`/${country.name.toLowerCase()}?id=${country._id}`} className="text-white">
+                        {country.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
+          
           {/* Company Column */}
           <div>
             <h2 className="text-base font-semibold mb-3">Company</h2>
@@ -118,6 +118,7 @@ export default function SparkleFooter() {
               ))}
             </ul>
           </div>
+          
           {/* Apply USA Column */}
           <div>
             <h2 className="text-base font-semibold mb-3">Apply USA</h2>
@@ -131,6 +132,7 @@ export default function SparkleFooter() {
               ))}
             </ul>
           </div>
+          
           {/* Resources Column */}
           <div>
             <h2 className="text-base font-semibold mb-3">Resources</h2>
@@ -145,8 +147,6 @@ export default function SparkleFooter() {
             </ul>
           </div>
         </div>
-
-        
 
         {/* Footer Bottom */}
         <div className="mt-10 border-t border-gray-900/10 pt-8 flex flex-col sm:flex-row items-center gap-2 md:gap-4 justify-between text-xs leading-5 opacity-80">

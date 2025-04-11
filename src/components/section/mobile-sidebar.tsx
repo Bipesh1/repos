@@ -11,7 +11,6 @@ import { checkUser } from "@/app/(protected)/actions/user";
 import { SearchBar } from "../search";
 
 export default async function MobileSidebar() {
-  // Fetch data for countries and user
   const countriesResponse = await getActiveCountries().catch(error => {
     console.error("Error fetching countries:", error);
     return { data: [] };
@@ -145,10 +144,10 @@ export default async function MobileSidebar() {
               <div className="mb-4">
                 <h3 className="font-medium text-primary mb-2 pl-4">Guide</h3>
                 <div className="space-y-2 pl-6">
-                  <Link href="/#top-universities" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/top-universities-in-usa-for-nepali-students~67f80464327ca2a732f32f0a" className="block text-secondary/80 hover:text-primary">
                     Top Universities
                   </Link>
-                  <Link href="/company/blog/scholarship~67dfbf97b3691ca0b847fa70" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/study-in-usa-with-scholarships-for-nepali-students~67f7fcf3f30adbf521cc3e12" className="block text-secondary/80 hover:text-primary">
                     Scholarships
                   </Link>
                   <Link href="/company/blog/for-working-professional~67e510195644b83ab5a2920e" className="block text-secondary/80 hover:text-primary">
@@ -223,9 +222,6 @@ export default async function MobileSidebar() {
                 <Link href="/company/blog/mbbs~67e50f365644b83ab5a29197" className="block text-secondary/80 hover:text-primary">
                   MBBS
                 </Link>
-                <Link href="/company/blog/for-working-professional~67e510195644b83ab5a2920e" className="block text-secondary/80 hover:text-primary">
-                  For Working Professionals
-                </Link>
                 <Link href="/company/blog/nursing~67e50f6d5644b83ab5a291d2" className="block text-secondary/80 hover:text-primary">
                   For Nursing
                 </Link>
@@ -234,7 +230,6 @@ export default async function MobileSidebar() {
           </AccordionItem>
         </Accordion>
 
-        
         {/* Contact Information */}
         <div className="flex flex-col gap-2 items-center justify-center mt-8 text-gray-700 border-t pt-4">
           <Link href="mailto:inquiry@goingcollege.com">
