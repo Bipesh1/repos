@@ -52,7 +52,7 @@ export async function Navigation() {
           </div>
 
           {/* Desktop Navigation - hidden on mobile */}
-          <div className="hidden lg:flex flex-1 items-center justify-center px-8">
+          <div className="hidden xl:flex flex-1 items-center justify-center px-8">
             <NavigationMenu>
               <NavigationMenuList className="flex space-x-2">
                 {/* Countries dropdown */}
@@ -304,7 +304,7 @@ export async function Navigation() {
           </div>
 
           {/* Search and User Profile - desktop */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden xl:flex items-center space-x-4">
             {/* Search Bar */}
             <div className="relative">
               <SearchBar />
@@ -342,10 +342,8 @@ export async function Navigation() {
           </div>
           
           {/* Mobile menu button & search */}
-          <div className="flex lg:hidden items-center space-x-2">
-            <button className="p-2 rounded-full hover:bg-gray-100 flex items-center justify-center">
-              <Search size={20} className="text-gray-600" />
-            </button>
+          <div className="flex xl:hidden items-center space-x-2">
+          
             <MobileSidebar  />
           </div>
         </div>

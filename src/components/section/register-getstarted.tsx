@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 export default function RegisterGetstarted() {
   const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true) // Add loading state
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const getUser = async () => {
@@ -18,26 +18,29 @@ export default function RegisterGetstarted() {
         console.error("Error checking user:", error)
         setUser(null)
       } finally {
-        setLoading(false) // Set loading to false when done
+        setLoading(false)
       }
     }
     getUser()
   }, [])
 
-  // Don't render buttons until loading is complete
   if (loading) return null
 
   return (
-    <div className="grid grid-cols-2 w-1/2 mx-auto gap-x-5">
+    <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl mx-auto px-4 sm:px-6 py-6">
       {!user && (
-        <>
-          <Button className="bg-blue-800 hover:bg-blue-800/80 rounded-full">
-            <Link href="/register">Register</Link>
+        <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 sm:gap-x-5">
+          <Button className="bg-blue-800 hover:bg-blue-800/80 rounded-full px-8 py-3 text-sm sm:text-base">
+            <Link href="/register" className="text-center">
+              Register
+            </Link>
           </Button>
-          <Button className="bg-secondary hover:bg-secondary/80 px-14 md:px-0 rounded-full">
-            <Link href="/register">Get Started</Link>
+          <Button className="bg-secondary hover:bg-secondary/80 rounded-full py-3 text-sm sm:text-base">
+            <Link href="/register" className="text-center">
+              Get Started
+            </Link>
           </Button>
-        </>
+        </div>
       )}
     </div>
   )
