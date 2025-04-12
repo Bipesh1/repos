@@ -84,7 +84,7 @@ export async function getActiveAdmin(): Promise<ActionResponse<any[]>> {
         }
     });
    
-      revalidatePath('/admin')
+      revalidatePath('/admindashboard')
       return { data: response.data,msg:"Deleted Succesfully", error: null };
     } catch (error: unknown) {
       return { data: null, error:"An error occured"};
@@ -110,5 +110,55 @@ export async function getActiveAdmin(): Promise<ActionResponse<any[]>> {
     } catch (error) {
       console.error("Logout error:", error);
       return { data: null, error: "An error occurred" };
+    }
+  }
+
+  export async function updateAdminPassword(adminId:any, newPassword:any) {
+    console.log(adminId,newPassword)
+    try {
+      // Validate password before sending to backend
+      if (newPassword.length < 6) {
+        return { success: false, message: "Password must be at least 6 characters long" };
+      }
+      
+      if (!/[A-Z]/.test(newPassword)) {
+        return { success: false, message: "Password must contain at least one uppercase letter" };
+      }
+      
+      if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
+        return { success: false, message: "Password must contain at least one special character" };
+      }
+  
+      // Get token from cookies
+      const token = await getToken()
+      
+      if (!token) {
+        return { success: false, message: "Authentication token not found" };
+      }
+  
+      // Make API call to backend using axios
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/password`,
+        {
+          password: newPassword,
+          _id:adminId
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      );
+  
+      // Invalidate page cache to reflect changes
+      
+      return { success: true, message: "Password updated successfully" };
+    } catch (error:any) {
+      console.error("Password update error:", error);
+      return { 
+        success: false, 
+        message: error.response?.data?.message || error.message || "An error occurred while updating the password" 
+      };
     }
   }

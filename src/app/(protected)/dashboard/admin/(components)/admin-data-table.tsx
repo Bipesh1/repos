@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import AdminEdit from "./admin-edit";
 import AdminDelete from "./admin-delete";
+import PasswordChangeDialog from "./admin-update-password";
 
 
 export function AdminDataTable({
@@ -58,6 +59,7 @@ const columns: ColumnDef<any>[] = [
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <AdminEdit id={item._id} />
                 <AdminDelete id={item._id}/>
+                <PasswordChangeDialog adminId={item._id} />
               </DropdownMenuContent>
             </DropdownMenu>
           );
