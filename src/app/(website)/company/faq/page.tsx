@@ -1,6 +1,8 @@
 import React from "react";
 import PageHeroSection from "@/components/page-hero";
-import heroImage from "@/assets/hero-img1.webp";
+import heroImage from "@/assets/hero.jpg";
+import heroImage1 from "@/assets/hero1.jpg";
+
 import { getActiveFaq } from "@/app/(protected)/actions/faq";
 import {
   Accordion,
@@ -18,7 +20,7 @@ export default async function Faq() {
     <div>
       <PageHeroSection
         img1={heroImage}
-        img2={heroImage}
+        img2={heroImage1}
         title="Explore Faqs"
         description="Clear out your confusion with our faqs."
       />
