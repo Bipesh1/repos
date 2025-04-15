@@ -2,14 +2,14 @@
 
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "motion/react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
 
 type Testimonial = {
   quote: string;
   name: string;
   designation: string;
-  src: string;
+  src: any;
 };
 export const AnimatedTestimonials = ({
   testimonials,
@@ -50,7 +50,7 @@ export const AnimatedTestimonials = ({
             <AnimatePresence>
               {testimonials.map((testimonial, index) => (
                 <motion.div
-                  key={testimonial.src}
+                  key={`testimonial-${index}`}
                   initial={{
                     opacity: 0,
                     scale: 0.9,
@@ -94,7 +94,7 @@ export const AnimatedTestimonials = ({
         </div>
         <div className="flex justify-between flex-col py-4">
           <motion.div
-            key={active}
+            key={`content-${active}`}
             initial={{
               y: 20,
               opacity: 0,
@@ -121,7 +121,7 @@ export const AnimatedTestimonials = ({
             <motion.p className="text-lg text-gray-500 mt-8 dark:text-neutral-300">
               {testimonials[active].quote.split(" ").map((word, index) => (
                 <motion.span
-                  key={index}
+                  key={`word-${index}`}
                   initial={{
                     filter: "blur(10px)",
                     opacity: 0,
