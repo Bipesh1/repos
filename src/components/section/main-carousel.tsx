@@ -46,7 +46,7 @@ export default function MainCarousel({ data }: { data: any }) {
             >
               {/* Top Half - Image */}
               <div className="h-1/2 relative">
-                <Link href={`/university/${itemData._id}`}>
+                <Link href={`/university/${itemData.slug}`}>
                   <Image
                     src={itemData?.image.url}
                     width={400}

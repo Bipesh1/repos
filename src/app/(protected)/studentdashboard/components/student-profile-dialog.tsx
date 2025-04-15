@@ -19,31 +19,83 @@ import { DatePicker } from "@/app/(protected)/components/datepicker";
 import { useTransition, useState, useEffect } from "react";
 import { editByStudent } from "../../actions/student";
 import { checkUser } from "@/app/(protected)/actions/user";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 const profileSchema = z.object({
+  // Personal Information
   userName: z.string().min(1, "Full Name is required"),
-  dob: z.string().optional(),
   gender: z.string().optional(),
   cityOfBirth: z.string().optional(),
   countryOfBirth: z.string().optional(),
+  dob: z.string().optional(),
   nationality: z.string().optional(),
   countryOfResidence: z.string().optional(),
   address: z.string().optional(),
   mobile: z.coerce.string().optional(),
   email: z.string().email().optional(),
+  maritalStatus: z.string().optional(),
+  
+  // Contact & Passport Information
   whatsapp: z.string().optional(),
   passportNumber: z.string().min(1, "Passport Number is required"),
   passportCountry: z.string().optional(),
   passportExpiry: z.string().optional(),
+  
+  // Emergency Contact
   emergencyName: z.string().min(1, "Emergency Contact Name is required"),
   emergencyRelation: z.string().optional(),
   emergencyPhone: z.coerce.string().optional(),
   emergencyEmail: z.string().optional(),
+  
+  // School Education
+  schlInstitution: z.string().optional(),
+  schlCountry: z.string().optional(),
+  schlBoard: z.string().optional(),
+  schlEndDate: z.string().optional(),
+  schlGrade: z.string().optional(),
+  
+  // High School Education
   hsInstitution: z.string().optional(),
   hsCountry: z.string().optional(),
   hsBoard: z.string().optional(),
+  hsStream: z.string().optional(),
+  hsStartDate: z.string().optional(),
   hsEndDate: z.string().optional(),
   hsGrade: z.string().optional(),
+  
+  // Graduation Education
+  gradInstitution: z.string().optional(),
+  gradCountry: z.string().optional(),
+  gradBoard: z.string().optional(),
+  gradStream: z.string().optional(),
+  gradStartDate: z.string().optional(),
+  gradEndDate: z.string().optional(),
+  gradGrade: z.string().optional(),
+  
+  // Post Graduation Education
+  postgradInstitution: z.string().optional(),
+  postgradCountry: z.string().optional(),
+  postgradBoard: z.string().optional(),
+  postgradStream: z.string().optional(),
+  postgradStartDate: z.string().optional(),
+  postgradEndDate: z.string().optional(),
+  postgradGrade: z.string().optional(),
+  
+  // Work Experience
+  workExpOrg: z.string().optional(),
+  workExpAdd: z.string().optional(),
+  workExpPos: z.string().optional(),
+  workExpFrom: z.string().optional(),
+  workExpTo: z.string().optional(),
+  
+  // Test Scores
+  testName: z.string().optional(),
+  testScore: z.string().optional(),
+  testDate: z.string().optional(),
+  engLangTest: z.string().optional(),
+  engTestScore: z.string().optional(),
+  engTestDate: z.string().optional(),
 });
 
 type NotificationType = {
@@ -66,15 +118,16 @@ export function StudentProfileDialog({ id }: { id: string }) {
     resolver: zodResolver(profileSchema),
     defaultValues: {
       userName: "",
-      dob: "",
       gender: "",
       cityOfBirth: "",
       countryOfBirth: "",
+      dob: "",
       nationality: "",
       countryOfResidence: "",
       address: "",
       mobile: "",
       email: "",
+      maritalStatus: "",
       whatsapp: "",
       passportNumber: "",
       passportCountry: "",
@@ -83,11 +136,43 @@ export function StudentProfileDialog({ id }: { id: string }) {
       emergencyRelation: "",
       emergencyPhone: "",
       emergencyEmail: "",
+      schlInstitution: "",
+      schlCountry: "",
+      schlBoard: "",
+      schlEndDate: "",
+      schlGrade: "",
       hsInstitution: "",
       hsCountry: "",
       hsBoard: "",
+      hsStream: "",
+      hsStartDate: "",
       hsEndDate: "",
       hsGrade: "",
+      gradInstitution: "",
+      gradCountry: "",
+      gradBoard: "",
+      gradStream: "",
+      gradStartDate: "",
+      gradEndDate: "",
+      gradGrade: "",
+      postgradInstitution: "",
+      postgradCountry: "",
+      postgradBoard: "",
+      postgradStream: "",
+      postgradStartDate: "",
+      postgradEndDate: "",
+      postgradGrade: "",
+      workExpOrg: "",
+      workExpAdd: "",
+      workExpPos: "",
+      workExpFrom: "",
+      workExpTo: "",
+      testName: "",
+      testScore: "",
+      testDate: "",
+      engLangTest: "",
+      engTestScore: "",
+      engTestDate: "",
     },
     mode: "onChange", // Validate on change to provide immediate feedback
   });
@@ -113,15 +198,16 @@ export function StudentProfileDialog({ id }: { id: string }) {
             const studentData = response.data;
             form.reset({
               userName: studentData.userName || "",
-              dob: studentData.dob || "",
               gender: studentData.gender || "",
               cityOfBirth: studentData.cityOfBirth || "",
               countryOfBirth: studentData.countryOfBirth || "",
+              dob: studentData.dob || "",
               nationality: studentData.nationality || "",
               countryOfResidence: studentData.countryOfResidence || "",
               address: studentData.address || "",
-              mobile: studentData.mobile || "",
+              mobile: studentData.mobile?.toString() || "",
               email: studentData.email || "",
+              maritalStatus: studentData.maritalStatus || "",
               whatsapp: studentData.whatsapp || "",
               passportNumber: studentData.passportNumber || "",
               passportCountry: studentData.passportCountry || "",
@@ -130,11 +216,43 @@ export function StudentProfileDialog({ id }: { id: string }) {
               emergencyRelation: studentData.emergencyRelation || "",
               emergencyPhone: studentData.emergencyPhone || "",
               emergencyEmail: studentData.emergencyEmail || "",
+              schlInstitution: studentData.schlInstitution || "",
+              schlCountry: studentData.schlCountry || "",
+              schlBoard: studentData.schlBoard || "",
+              schlEndDate: studentData.schlEndDate || "",
+              schlGrade: studentData.schlGrade || "",
               hsInstitution: studentData.hsInstitution || "",
               hsCountry: studentData.hsCountry || "",
               hsBoard: studentData.hsBoard || "",
+              hsStream: studentData.hsStream || "",
+              hsStartDate: studentData.hsStartDate || "",
               hsEndDate: studentData.hsEndDate || "",
               hsGrade: studentData.hsGrade || "",
+              gradInstitution: studentData.gradInstitution || "",
+              gradCountry: studentData.gradCountry || "",
+              gradBoard: studentData.gradBoard || "",
+              gradStream: studentData.gradStream || "",
+              gradStartDate: studentData.gradStartDate || "",
+              gradEndDate: studentData.gradEndDate || "",
+              gradGrade: studentData.gradGrade || "",
+              postgradInstitution: studentData.postgradInstitution || "",
+              postgradCountry: studentData.postgradCountry || "",
+              postgradBoard: studentData.postgradBoard || "",
+              postgradStream: studentData.postgradStream || "",
+              postgradStartDate: studentData.postgradStartDate || "",
+              postgradEndDate: studentData.postgradEndDate || "",
+              postgradGrade: studentData.postgradGrade || "",
+              workExpOrg: studentData.workExpOrg || "",
+              workExpAdd: studentData.workExpAdd || "",
+              workExpPos: studentData.workExpPos || "",
+              workExpFrom: studentData.workExpFrom || "",
+              workExpTo: studentData.workExpTo || "",
+              testName: studentData.testName || "",
+              testScore: studentData.testScore || "",
+              testDate: studentData.testDate || "",
+              engLangTest: studentData.engLangTest || "",
+              engTestScore: studentData.engTestScore || "",
+              engTestDate: studentData.engTestDate || "",
             });
           }
         } catch (error) {
@@ -259,6 +377,7 @@ export function StudentProfileDialog({ id }: { id: string }) {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6 text-sm"
               >
+                {/* Personal Information Section */}
                 <div>
                   <h4 className="text-primary font-semibold text-lg mb-2">
                     Personal Information
@@ -275,18 +394,42 @@ export function StudentProfileDialog({ id }: { id: string }) {
                     
                     <FormField id="dob" label="Date of Birth (as per passport)">
                       <DatePicker
-                    
                         value={form.watch("dob")}
                         onChange={(value) => form.setValue("dob", value)}
                       />
                     </FormField>
                     
                     <FormField id="gender" label="Gender">
-                      <Input 
-                        id="gender"
-                        placeholder="Gender" 
-                        {...form.register("gender")} 
-                      />
+                      <Select
+                        onValueChange={(value) => form.setValue("gender", value)}
+                        value={form.watch("gender")}
+                      >
+                        <SelectTrigger id="gender">
+                          <SelectValue placeholder="Select Gender" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Male">Male</SelectItem>
+                          <SelectItem value="Female">Female</SelectItem>
+                          <SelectItem value="Other">Other</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormField>
+                    
+                    <FormField id="maritalStatus" label="Marital Status">
+                      <Select
+                        onValueChange={(value) => form.setValue("maritalStatus", value)}
+                        value={form.watch("maritalStatus")}
+                      >
+                        <SelectTrigger id="maritalStatus">
+                          <SelectValue placeholder="Select Marital Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Single">Single</SelectItem>
+                          <SelectItem value="Married">Married</SelectItem>
+                          <SelectItem value="Divorced">Divorced</SelectItem>
+                          <SelectItem value="Widowed">Widowed</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormField>
                     
                     <FormField id="cityOfBirth" label="City of Birth">
@@ -322,7 +465,7 @@ export function StudentProfileDialog({ id }: { id: string }) {
                     </FormField>
                     
                     <FormField id="address" label="Permanent Address">
-                      <Input 
+                      <Textarea 
                         id="address"
                         placeholder="Permanent Address" 
                         {...form.register("address")} 
@@ -353,7 +496,15 @@ export function StudentProfileDialog({ id }: { id: string }) {
                         {...form.register("whatsapp")} 
                       />
                     </FormField>
-                    
+                  </div>
+                </div>
+
+                {/* Passport Information Section */}
+                <div>
+                  <h4 className="text-primary font-semibold text-lg mt-6 mb-2">
+                    Passport Information
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField id="passportNumber" label="Passport Number" required>
                       <Input 
                         id="passportNumber"
@@ -373,7 +524,6 @@ export function StudentProfileDialog({ id }: { id: string }) {
                     
                     <FormField id="passportExpiry" label="Passport Expiry Date">
                       <DatePicker
-                
                         value={form.watch("passportExpiry")}
                         onChange={(value) => form.setValue("passportExpiry", value)}
                       />
@@ -381,6 +531,7 @@ export function StudentProfileDialog({ id }: { id: string }) {
                   </div>
                 </div>
 
+                {/* Emergency Contact Section */}
                 <div>
                   <h4 className="text-primary font-semibold text-lg mt-6 mb-2">
                     Emergency Contact
@@ -421,9 +572,57 @@ export function StudentProfileDialog({ id }: { id: string }) {
                   </div>
                 </div>
 
+                {/* Educational Information - School Section */}
                 <div>
                   <h4 className="text-primary font-semibold text-lg mt-6 mb-2">
-                    High School / 10th Education
+                    School Education (Class 10th)
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField id="schlInstitution" label="Institution Name">
+                      <Input 
+                        id="schlInstitution"
+                        placeholder="Institution Name" 
+                        {...form.register("schlInstitution")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="schlCountry" label="Country">
+                      <Input 
+                        id="schlCountry"
+                        placeholder="Country" 
+                        {...form.register("schlCountry")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="schlBoard" label="Board">
+                      <Input 
+                        id="schlBoard"
+                        placeholder="Board" 
+                        {...form.register("schlBoard")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="schlEndDate" label="Completion Date">
+                      <DatePicker
+                        value={form.watch("schlEndDate")}
+                        onChange={(value) => form.setValue("schlEndDate", value)}
+                      />
+                    </FormField>
+                    
+                    <FormField id="schlGrade" label="Grade / CGPA / Percentage">
+                      <Input 
+                        id="schlGrade"
+                        placeholder="Grade / CGPA / Percentage" 
+                        {...form.register("schlGrade")} 
+                      />
+                    </FormField>
+                  </div>
+                </div>
+
+                {/* Educational Information - High School Section */}
+                <div>
+                  <h4 className="text-primary font-semibold text-lg mt-6 mb-2">
+                    High School Education (Class 12th)
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField id="hsInstitution" label="Institution Name">
@@ -442,39 +641,291 @@ export function StudentProfileDialog({ id }: { id: string }) {
                       />
                     </FormField>
                     
-                    <FormField id="hsBoard" label="Board/University">
+                    <FormField id="hsBoard" label="Board">
                       <Input 
                         id="hsBoard"
-                        placeholder="Board/University" 
+                        placeholder="Board" 
                         {...form.register("hsBoard")} 
                       />
                     </FormField>
                     
-                    <FormField id="hsEndDate" label="High School Completion Date">
+                    <FormField id="hsStream" label="Stream/Specialization">
+                      <Input 
+                        id="hsStream"
+                        placeholder="Stream/Specialization" 
+                        {...form.register("hsStream")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="hsStartDate" label="Start Date">
                       <DatePicker
-                      
+                        value={form.watch("hsStartDate")}
+                        onChange={(value) => form.setValue("hsStartDate", value)}
+                      />
+                    </FormField>
+                    
+                    <FormField id="hsEndDate" label="Completion Date">
+                      <DatePicker
                         value={form.watch("hsEndDate")}
                         onChange={(value) => form.setValue("hsEndDate", value)}
                       />
                     </FormField>
                     
-                    <FormField id="hsGrade" label="Grade / CGPA">
+                    <FormField id="hsGrade" label="Grade / CGPA / Percentage">
                       <Input 
                         id="hsGrade"
-                        placeholder="Grade / CGPA" 
+                        placeholder="Grade / CGPA / Percentage" 
                         {...form.register("hsGrade")} 
                       />
                     </FormField>
                   </div>
                 </div>
 
-                <div className="flex justify-end pt-4 pb-6">
-                  <Button
-                    type="submit"
-                    className="bg-primary text-white hover:bg-primary/90"
+                {/* Educational Information - Graduation Section */}
+                <div>
+                  <h4 className="text-primary font-semibold text-lg mt-6 mb-2">
+                    Graduation Education (Bachelor's Degree)
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField id="gradInstitution" label="Institution Name">
+                      <Input 
+                        id="gradInstitution"
+                        placeholder="Institution Name" 
+                        {...form.register("gradInstitution")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="gradCountry" label="Country">
+                      <Input 
+                        id="gradCountry"
+                        placeholder="Country" 
+                        {...form.register("gradCountry")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="gradBoard" label="University/Board">
+                      <Input 
+                        id="gradBoard"
+                        placeholder="University/Board" 
+                        {...form.register("gradBoard")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="gradStream" label="Degree/Major">
+                      <Input 
+                        id="gradStream"
+                        placeholder="Degree/Major" 
+                        {...form.register("gradStream")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="gradStartDate" label="Start Date">
+                      <DatePicker
+                        value={form.watch("gradStartDate")}
+                        onChange={(value) => form.setValue("gradStartDate", value)}
+                      />
+                    </FormField>
+                    
+                    <FormField id="gradEndDate" label="Completion Date">
+                      <DatePicker
+                        value={form.watch("gradEndDate")}
+                        onChange={(value) => form.setValue("gradEndDate", value)}
+                      />
+                    </FormField>
+                    
+                    <FormField id="gradGrade" label="Grade / CGPA / Percentage">
+                      <Input 
+                        id="gradGrade"
+                        placeholder="Grade / CGPA / Percentage" 
+                        {...form.register("gradGrade")} 
+                      />
+                    </FormField>
+                  </div>
+                </div>
+
+                {/* Educational Information - Post Graduation Section */}
+                <div>
+                  <h4 className="text-primary font-semibold text-lg mt-6 mb-2">
+                    Post Graduation Education (Master's Degree) - If Applicable
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField id="postgradInstitution" label="Institution Name">
+                      <Input 
+                        id="postgradInstitution"
+                        placeholder="Institution Name" 
+                        {...form.register("postgradInstitution")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="postgradCountry" label="Country">
+                      <Input 
+                        id="postgradCountry"
+                        placeholder="Country" 
+                        {...form.register("postgradCountry")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="postgradBoard" label="University/Board">
+                      <Input 
+                        id="postgradBoard"
+                        placeholder="University/Board" 
+                        {...form.register("postgradBoard")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="postgradStream" label="Degree/Major">
+                      <Input 
+                        id="postgradStream"
+                        placeholder="Degree/Major" 
+                        {...form.register("postgradStream")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="postgradStartDate" label="Start Date">
+                      <DatePicker
+                        value={form.watch("postgradStartDate")}
+                        onChange={(value) => form.setValue("postgradStartDate", value)}
+                      />
+                    </FormField>
+                    
+                    <FormField id="postgradEndDate" label="Completion Date">
+                      <DatePicker
+                        value={form.watch("postgradEndDate")}
+                        onChange={(value) => form.setValue("postgradEndDate", value)}
+                      />
+                    </FormField>
+                    
+                    <FormField id="postgradGrade" label="Grade / CGPA / Percentage">
+                      <Input 
+                        id="postgradGrade"
+                        placeholder="Grade / CGPA / Percentage" 
+                        {...form.register("postgradGrade")} 
+                      />
+                    </FormField>
+                  </div>
+                </div>
+
+                {/* Work Experience Section */}
+                <div>
+                  <h4 className="text-primary font-semibold text-lg mt-6 mb-2">
+                    Work Experience (If Applicable)
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField id="workExpOrg" label="Organization">
+                      <Input 
+                        id="workExpOrg"
+                        placeholder="Organization Name" 
+                        {...form.register("workExpOrg")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="workExpPos" label="Position">
+                      <Input 
+                        id="workExpPos"
+                        placeholder="Position/Title" 
+                        {...form.register("workExpPos")} 
+                      />
+                    </FormField>
+
+                    <FormField id="workExpAdd" label="Address">
+                      <Textarea 
+                        id="workExpAdd"
+                        placeholder="Organization Address" 
+                        {...form.register("workExpAdd")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="workExpFrom" label="From Date">
+                      <DatePicker
+                        value={form.watch("workExpFrom")}
+                        onChange={(value) => form.setValue("workExpFrom", value)}
+                      />
+                    </FormField>
+                    
+                    <FormField id="workExpTo" label="To Date">
+                      <DatePicker
+                        value={form.watch("workExpTo")}
+                        onChange={(value) => form.setValue("workExpTo", value)}
+                      />
+                    </FormField>
+                  </div>
+                </div>
+
+                {/* Test Scores Section */}
+                <div>
+                  <h4 className="text-primary font-semibold text-lg mt-6 mb-2">
+                    Test Scores
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField id="testName" label="Test Name (e.g., SAT, ACT)">
+                      <Input 
+                        id="testName"
+                        placeholder="Test Name" 
+                        {...form.register("testName")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="testScore" label="Test Score">
+                      <Input 
+                        id="testScore"
+                        placeholder="Test Score" 
+                        {...form.register("testScore")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="testDate" label="Test Date">
+                      <DatePicker
+                        value={form.watch("testDate")}
+                        onChange={(value) => form.setValue("testDate", value)}
+                      />
+                    </FormField>
+                    
+                    <FormField id="EngLangTest" label="English Language Test (e.g., IELTS, TOEFL)">
+                      <Input 
+                        id="EngLangTest"
+                        placeholder="English Language Test" 
+                        {...form.register("engLangTest")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="EngTestScore" label="English Test Score">
+                      <Input 
+                        id="EngTestScore"
+                        placeholder="Test Score" 
+                        {...form.register("engTestScore")} 
+                      />
+                    </FormField>
+                    
+                    <FormField id="EngTestDate" label="English Test Date">
+                      <DatePicker
+                        value={form.watch("engTestDate")}
+                        onChange={(value) => form.setValue("engTestDate", value)}
+                      />
+                    </FormField>
+                  </div>
+                </div>
+
+                {/* Form Submission */}
+                <div className="flex justify-end gap-4 pt-6 sticky bottom-0 bg-background pb-4">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => setOpen(false)}
                     disabled={isPending}
                   >
-                    {isPending ? "Submitting..." : "Submit"}
+                    Cancel
+                  </Button>
+                  <Button 
+                    type="submit" 
+                    disabled={isPending}
+                    className="bg-primary hover:bg-primary/90"
+                  >
+                    {isPending ? (
+                      <>
+                        <span className="mr-2">Saving...</span>
+                        <span className="animate-spin">↻</span>
+                      </>
+                    ) : "Save Changes"}
                   </Button>
                 </div>
               </form>
@@ -483,5 +934,5 @@ export function StudentProfileDialog({ id }: { id: string }) {
         </DialogContent>
       </Dialog>
     </>
-  );
+  )
 }

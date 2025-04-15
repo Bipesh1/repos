@@ -1,4 +1,4 @@
-import { fetchUniversityById } from '@/app/(protected)/actions/university';
+import { fetchUniversityById, fetchUniversityBySlug } from '@/app/(protected)/actions/university';
 import React from 'react'
 import CountryHeroSection from "@/components/country-hero-section";
 
@@ -11,13 +11,13 @@ import parse from "html-react-parser"
 
 export default async function Page({params}:{
     params:{
-        id:string;
+        slug:string;
         courseid: string;
     }
 }) {
-    const {id,courseid}= await params
+    const {slug,courseid}= await params
 
-    const uniresponse= await fetchUniversityById(id)
+    const uniresponse= await fetchUniversityBySlug(slug)
     const unidata= uniresponse.data.university
     const courseresponse=await fetchCourseById(courseid)
     const coursedata= courseresponse.data.course

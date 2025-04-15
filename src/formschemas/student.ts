@@ -28,7 +28,6 @@ export const studentSchema = z.object({
   wishlist: z.string().optional(),
   isVerified: z.boolean().default(false),
   mailVerificationToken: z.string().optional(),
-  tests:z.string().optional(),
   gpa: z.string().optional(),
   link: z.string().optional(),
   passwordChangedAt: z.date().optional(),

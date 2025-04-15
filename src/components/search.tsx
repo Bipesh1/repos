@@ -14,7 +14,8 @@ interface University {
   slug?: string;
   country?:  { 
     name: string,
-  _id: string
+  _id: string,
+ 
 }
   image?: {
     url: string;
@@ -29,6 +30,7 @@ interface Course {
   university?: {
     name: string;
     id: string;
+    slug:string
   };
   universityName?: string;
   universityId?: string;
@@ -201,7 +203,7 @@ export function SearchBar() {
                     {filteredResults.universities.map((uni) => (
                       <li key={uni._id} className="border-b border-gray-100 last:border-0">
                         <Link 
-                          href={`/university/${uni._id}`}
+                          href={`/university/${uni.slug}`}
                           className="block px-4 py-3 hover:bg-gray-50 transition-colors"
                           onClick={() => setShowResults(false)}
                         >
@@ -224,7 +226,7 @@ export function SearchBar() {
                     {filteredResults.courses.map((course) => (
                       <li key={course._id} className="border-b border-gray-100 last:border-0">
                         <Link 
-                          href={`/university/${course.university?.id}/${course._id}`}
+                          href={`/university/${course.university?.slug}/${course._id}`}
                           className="block px-4 py-3 hover:bg-gray-50 transition-colors"
                           onClick={() => setShowResults(false)}
                         >

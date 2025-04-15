@@ -58,6 +58,23 @@ export async function fetchUniversityById(id:any): Promise<ActionResponse<any>> 
     }
   }
 
+  export async function fetchUniversityBySlug(slug:any): Promise<ActionResponse<any>> {
+    try {
+      const token =await getToken()
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/university/by-slug/${slug}/`,{
+        withCredentials: true,
+        headers:{
+          'Authorization': `Bearer ${token}`,
+        }
+    });
+   
+      return { data: response.data,msg:"Fetched Succesfully", error: null };
+    } catch (error: unknown) {
+      return { data: null, error:"An error occured"};
+    }
+  }
+
+
    export async function editUniversity(values:any,id:any): Promise<ActionResponse<any>> {
       try {
         const token =await getToken()

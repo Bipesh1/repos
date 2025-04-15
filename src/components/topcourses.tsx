@@ -12,6 +12,7 @@ export default async function TopCourses({id,uniimg}:{
         return <p className='text-center text-gray-400'>No Courses.</p>;
     }
     const data= response.data.courses
+    console.log(data)
    
   return (
    <CourseCarousel data={data} uniimg={uniimg} />

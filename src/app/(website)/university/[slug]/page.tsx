@@ -1,5 +1,5 @@
 import { fetchCourseByUniversity } from '@/app/(protected)/actions/course'
-import { fetchUniversityById } from '@/app/(protected)/actions/university';
+import { fetchUniversityById, fetchUniversityBySlug } from '@/app/(protected)/actions/university';
 import React from 'react'
 import CountryHeroSection from "@/components/country-hero-section";
 
@@ -19,13 +19,13 @@ import parse from "html-react-parser";
 
 export default async function Page({params}:{
     params:{
-        id:string;
+        slug:string;
     }
 }) {
     const userrespone= await checkUser()
     const data= userrespone.data
-    const {id}= await params
-    const uniresponse= await fetchUniversityById(id)
+    const {slug}= await params
+    const uniresponse= await fetchUniversityBySlug(slug)
     const unidata= uniresponse.data.university
   return (
     <div className="container mx-auto space-y-4">
@@ -33,7 +33,7 @@ export default async function Page({params}:{
       <div className="container md:px-12 px-4 space-y-4">
       {data && data.role && data.role === "user" && data.category !== "none" && (
   <Button className='float-end cursor-pointer' variant={"outline"}>
-    <ApplyUniversity id={id}/>
+    <ApplyUniversity id={unidata._id}/>
   </Button>
 )}
       
@@ -61,7 +61,7 @@ export default async function Page({params}:{
         <div>
         <div className="" id="topuniversities">
         <h2 className="text-xl font-semibold text-primary">Top Courses</h2>
-        <TopCourses id={id} uniimg={unidata.image.url} />
+        <TopCourses id={unidata._id} uniimg={unidata.image.url} />
         </div>
         <div className="" id="faq"></div>
         <div className='container space-y-10'>

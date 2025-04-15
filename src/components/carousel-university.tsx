@@ -17,6 +17,7 @@ type AdmissionFilter = "all" | true | false;
 interface UniversityData {
   _id: string;
   name: string;
+  slug:string;
   country: {
     name: string;
   };
@@ -284,7 +285,7 @@ function Carousel({ data }: { data: UniversityData[] }) {
 
                 {/* Top Half - Image */}
                 <div className="h-1/2 relative">
-                  <Link href={`/university/${itemData._id}`}>
+                  <Link href={`/university/${itemData.slug}`}>
                     <Image
                       src={itemData?.image.url}
                       width={400}

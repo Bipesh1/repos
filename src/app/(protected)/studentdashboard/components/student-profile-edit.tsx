@@ -34,7 +34,7 @@ const profileSchema = z.object({
     .max(15, "Mobile number must not exceed 15 digits")
     .regex(/^\d+$/, "Mobile number must contain only digits"),
   
-  gpa: z.coerce
+  hsGrade: z.coerce
     .string()
     .optional()
     .refine((val) => !val || (parseFloat(val) >= 0.0 && parseFloat(val) <= 4.0), {
@@ -70,7 +70,7 @@ export default function StudentProfileEdit({ id }: { id: string }) {
     resolver: zodResolver(profileSchema),
     defaultValues: {
       mobile: "",
-      gpa: "",
+      hsGrade: "",
       link: "",
       maritalStatus:"",
       workExp:"",
@@ -87,11 +87,11 @@ export default function StudentProfileEdit({ id }: { id: string }) {
           const studentData = response.data;
           form.reset({
             mobile: studentData.mobile || "",
-            gpa: studentData.gpa|| "",
+            hsGrade: studentData.hsGrade|| "",
             link: studentData.link || "",
             maritalStatus:studentData.maritalStatus|| "",
             workExp:studentData.workExp || "",
-            tests:studentData.tests||"",
+         
             
           });
         }
@@ -154,7 +154,7 @@ export default function StudentProfileEdit({ id }: { id: string }) {
 
             <FormField
               control={form.control}
-              name="gpa"
+              name="hsGrade"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>GPA</FormLabel>
@@ -175,71 +175,7 @@ export default function StudentProfileEdit({ id }: { id: string }) {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="link"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Google Drive Link</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="url"
-                      placeholder="Paste your Google Drive sharing link"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-                          control={form.control}
-                          name="tests"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Tests Information</FormLabel>
-                              <FormControl>
-                                <Textarea placeholder="IELTS:6.0, TOEFL:100..." {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-            <FormField
-              control={form.control}
-              name="maritalStatus"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Martial Status</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Marital Status"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="workExp"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Work Experience</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Bank Manager, 2+ years"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
+           
             <Button 
               size="sm" 
               disabled={isPending} 

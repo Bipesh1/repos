@@ -147,7 +147,7 @@ export default function ApplyUniversity({ id }: { id: string }) {
             <div className="grid grid-cols-4 items-center gap-4">
               <span className="text-sm font-medium text-right">Tests:</span>
               <span className="col-span-3 text-sm">
-                {userData.tests || "Not specified"}
+                {userData.testName || "Not specified"}:{userData.testScore||"Not Specified"}
               </span>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">

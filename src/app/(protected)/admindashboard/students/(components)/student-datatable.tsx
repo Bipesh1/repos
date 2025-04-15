@@ -25,24 +25,23 @@ import { fetchCourseById } from "@/app/(protected)/actions/course";
 
 export function StudentDataTable({
   data,
-}:{
-  data:any
+}: {
+  data: any
 }) {
-  console.log(data);
   // State to store fetched course names
-  const [courseNames, setCourseNames] = useState({});
+  const [courseNames, setCourseNames] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
   // Extract all unique course IDs from the data
   useEffect(() => {
     const fetchCourseNames = async () => {
       setLoading(true);
-      const courseIds = new Set();
+      const courseIds = new Set<string>();
       
       // Collect all course IDs
-      data.forEach((item:any) => {
+      data.forEach((item: any) => {
         if (item.university && Array.isArray(item.university)) {
-          item.university.forEach((uni:any) => {
+          item.university.forEach((uni: any) => {
             if (uni.course) {
               courseIds.add(uni.course);
             }
@@ -51,14 +50,13 @@ export function StudentDataTable({
       });
       
       // Fetch course names for all IDs
-      const courseNameMap = {};
+      const courseNameMap: Record<string, string> = {};
       
       await Promise.all(
         Array.from(courseIds).map(async (courseId) => {
           try {
             const response = await fetchCourseById(courseId);
-            console.log(response)
-            if (response.data?.course && response.data?.course?.title) {
+            if (response.data?.course?.title) {
               courseNameMap[courseId] = response.data.course.title;
             } else {
               courseNameMap[courseId] = "Unknown Course";
@@ -85,12 +83,78 @@ export function StudentDataTable({
       header: "User Name",
     },
     {
-      accessorKey: "tests",
-      header: "Test",
+      id: "testScores",
+      header: "Test Scores",
+      cell: ({ row }) => {
+        const item = row.original;
+        
+        // Create an array of all test score information
+        const testScores = [];
+        
+        // Add standard test if exists
+        if (item.testName || item.testScore) {
+          testScores.push({
+            type: "Standard Test",
+            name: item.testName || "Not specified",
+            score: item.testScore,
+            date: item.testDate
+          });
+        }
+        
+        // Add English test if exists
+        if (item.EngLangTest || item.EngTestScore) {
+          testScores.push({
+            type: "English Test",
+            name: item.EngLangTest || "Not specified",
+            score: item.EngTestScore,
+            date: item.EngTestDate
+          });
+        }
+        
+        return testScores.length > 0 ? (
+          <div className="flex flex-col gap-2">
+            {testScores.map((test, index) => (
+              <div key={index} className="border rounded p-2">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="font-medium">{test.type}</p>
+                    <p className="text-sm text-gray-600">{test.name}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold">{test.score || 'N/A'}</p>
+                    {test.date && (
+                      <p className="text-xs text-gray-500">
+                        {new Date(test.date).toLocaleDateString()}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <span className="text-gray-400">No test scores available</span>
+        );
+      }
     },
     {
       accessorKey: "link",
       header: "Drive Link",
+      cell: ({ row }) => {
+        const link = row.getValue("link");
+        return link ? (
+          <a 
+            href={link as string} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            View Documents
+          </a>
+        ) : (
+          <span className="text-gray-400">No link</span>
+        );
+      }
     },
     {
       id: "courses",
@@ -99,19 +163,18 @@ export function StudentDataTable({
         const item = row.original;
         
         if (item.university && Array.isArray(item.university)) {
-          // Get courses from all universities where course field exists
           const coursesInfo = item.university
-            .filter((uni:any) => uni.course)
-            .map((uni:any) => {
+            .filter((uni: any) => uni.course)
+            .map((uni: any) => {
               const courseName = courseNames[uni.course] || "Loading...";
               return courseName;
             });
           
           return coursesInfo.length > 0 ? 
             (loading ? "Loading courses..." : coursesInfo.join(', ')) : 
-            'No course information';
+            <span className="text-gray-400">No courses</span>;
         }
-        return 'No course data';
+        return <span className="text-gray-400">No data</span>;
       }
     },
     {
@@ -145,8 +208,8 @@ export function StudentDataTable({
               onOpenChange={setChatOpen}
               channelId={`student_${item._id}_counselor_${item.counselor?.id}`}
               currentUser={{
-                id: item.counselor?.id || "", // Counselor's ID
-                name: "Counselor" // Or fetch counselor name
+                id: item.counselor?.id || "",
+                name: "Counselor"
               }}
             />
           </>
