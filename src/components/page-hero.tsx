@@ -7,7 +7,8 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import { motion } from "framer-motion"
 import Image, { StaticImageData } from 'next/image'
-import heroImage from "@/assets/hero-img1.webp"
+import heroImage from "@/assets/hero.jpg"
+import heroImage1 from "@/assets/hero1.jpg"
 import { Button } from "@/components/ui/button"
 import { TypingAnimation } from "@/components/magicui/typing-animation"
 
@@ -30,7 +31,7 @@ export default function PageHeroSection({img1,img2,title,description}:{
               className=""
             >
               <CarouselContent className=''>
-                {[heroImage,heroImage].map((image, index) => (
+                {[heroImage,heroImage1].map((image, index) => (
                   <CarouselItem key={index} className='mx-auto' >
                     <div className='relative w-full h-[40rem]'>
                     <Image
