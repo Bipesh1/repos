@@ -42,7 +42,7 @@ export default function SocialLinks() {
 const connects = [
     {
       name: "Facebook",
-      href: "https://www.facebook.com/softyhygiene.np",
+      href: "#",
       icons: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@ const connects = [
   
     {
       name: "Messanger",
-      href: "https://www.facebook.com/softyhygiene.np",
+      href: "#",
       icons: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@ const connects = [
     },
     {
       name: "Instagram",
-      href: "https://www.instagram.com/softy_hygiene/",
+      href: "#",
       icons: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +152,7 @@ const connects = [
   
     {
       name: "Whatsapp",
-      href: "https://api.whatsapp.com/send?phone=%2B9779851073552&context=ARBWBVhZV2RY_YxdeetUKWZjFwrCFZ1dOOi0-rbnrJTgKcGBjPaEy25TpnbsJZI93S8Qg5H0n-7AJxZhS-h1Zf8lbaF6IijOyVydBC8tPUVl4JknHyJ8phWWYFx4C3DpwFnDDgJM7uc2Im99a_fHj8q4PQ&source=FB_Page&app=facebook&entry_point=page_cta",
+      href: "https://api.whatsapp.com/send?phone=%2B9779851014902&context=ARBWBVhZV2RY_YxdeetUKWZjFwrCFZ1dOOi0-rbnrJTgKcGBjPaEy25TpnbsJZI93S8Qg5H0n-7AJxZhS-h1Zf8lbaF6IijOyVydBC8tPUVl4JknHyJ8phWWYFx4C3DpwFnDDgJM7uc2Im99a_fHj8q4PQ&source=FB_Page&app=facebook&entry_point=page_cta",
       icons: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -209,7 +209,7 @@ const connects = [
   
     {
       name: "Location",
-      href: "https://www.google.com/maps/place/Maitighar,+Kathmandu+44600/@27.6924773,85.3199905,17z/data=!3m1!4b1!4m6!3m5!1s0x39eb19b1ce7d8c61:0x58bb28c5ee006d86!8m2!3d27.6919767!4d85.3229913!16s%2Fg%2F11b6b4bbpy?entry=ttu&g_ep=EgoyMDI1MDIwNS4xIKXMDSoASAFQAw%3D%3D",
+      href: "#",
       icons: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
