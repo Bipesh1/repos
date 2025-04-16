@@ -42,7 +42,7 @@ export default function SocialLinks() {
 const connects = [
     {
       name: "Facebook",
-      href: "#",
+      href: "https://www.facebook.com/goingcollegedotcom",
       icons: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@ const connects = [
     },
     {
       name: "Instagram",
-      href: "#",
+      href: "https://www.instagram.com/goingcollegeabroad/",
       icons: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +152,7 @@ const connects = [
   
     {
       name: "Whatsapp",
-      href: "https://api.whatsapp.com/send?phone=%2B9779851014902&context=ARBWBVhZV2RY_YxdeetUKWZjFwrCFZ1dOOi0-rbnrJTgKcGBjPaEy25TpnbsJZI93S8Qg5H0n-7AJxZhS-h1Zf8lbaF6IijOyVydBC8tPUVl4JknHyJ8phWWYFx4C3DpwFnDDgJM7uc2Im99a_fHj8q4PQ&source=FB_Page&app=facebook&entry_point=page_cta",
+      href: "https://api.whatsapp.com/send?phone=%2B9779807438831&context=ARBWBVhZV2RY_YxdeetUKWZjFwrCFZ1dOOi0-rbnrJTgKcGBjPaEy25TpnbsJZI93S8Qg5H0n-7AJxZhS-h1Zf8lbaF6IijOyVydBC8tPUVl4JknHyJ8phWWYFx4C3DpwFnDDgJM7uc2Im99a_fHj8q4PQ&source=FB_Page&app=facebook&entry_point=page_cta",
       icons: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
