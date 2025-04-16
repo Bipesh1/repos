@@ -123,7 +123,7 @@ export default function InquiryForm() {
            "
           id="inquiry"
           {...register("text")}
-          placeholder="Type your inquiry here"
+          placeholder="Enter your academic qualifications and GPA, your choice country, university or course. "
           required
         />
         {errors.text && (
