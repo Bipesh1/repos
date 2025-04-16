@@ -17,6 +17,38 @@ import { checkUser } from '@/app/(protected)/actions/user';
 import ApplyUniversity from '@/app/(protected)/studentdashboard/universities/(components)/apply-to-uni';
 import parse from "html-react-parser";
 
+
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const { slug } = params;
+  const response = await fetchUniversityBySlug(slug);
+  const university = response?.data?.university;
+
+  if (!university) {
+    return {
+      title: "University Not Found | GoingCollege",
+      description: "The university you're looking for could not be found.",
+    };
+  }
+
+  return {
+    title: `${university.name} | GoingCollege`,
+    description: university?.metaDescription || `Explore courses, scholarships, and requirements for studying at ${university.name}.`,
+    openGraph: {
+      title: `${university.name} | GoingCollege`,
+      description: university?.metaDescription || `Explore courses and scholarships at ${university.name}.`,
+      images: university.image?.url ? [{ url: university.image.url }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${university.name} | GoingCollege`,
+      description: university?.metaDescription || `Explore courses, scholarships, and more about ${university.name}.`,
+      images: university.image?.url ? [university.image.url] : [],
+    },
+  };
+}
+
+
+
 export default async function Page({params}:{
     params:{
         slug:string;

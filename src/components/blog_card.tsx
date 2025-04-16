@@ -19,10 +19,10 @@ export function CardDemo({ blog }: { blog: any }) {
 
   const handleRedirect = () => {
     router.push(`/company/blog/${blog.slug}`);
-
   };
 
   const sliceTitle = (content: string) => {
+    if (!content) return "Untitled";
     const maxLength = 15;
     return content.length > maxLength
       ? content.slice(0, maxLength) + "..."
@@ -30,10 +30,15 @@ export function CardDemo({ blog }: { blog: any }) {
   };
 
   const sliceDescription = (content: string) => {
+    if (!content) return ""; // Handle undefined/null content
+    
+    // First strip HTML tags for accurate text length calculation
+    const textOnly = content.replace(/<[^>]*>/g, '');
+    
     const maxLength = 30;
-    return content.length > maxLength
-      ? content.slice(0, maxLength) + "..."
-      : content;
+    return textOnly.length > maxLength
+      ? textOnly.slice(0, maxLength) + "..."
+      : textOnly;
   };
 
   const formatDate = (dateString: string | undefined): string => {
@@ -48,16 +53,19 @@ export function CardDemo({ blog }: { blog: any }) {
 
   return (
     <div className="md:max-w-xs max-w-xl w-full group/card transition-all duration-300 hover:scale-105">
-      <div className="cursor-pointer overflow-hidden relative rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col">
+      <div 
+        className="cursor-pointer overflow-hidden relative rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 flex flex-col"
+        onClick={() => handleRedirect()}
+      >
         
         {/* Category Badge */}
         <div className="absolute top-4 right-4 z-20">
           <span className="px-3 py-1 text-xs font-medium rounded-full bg-white/90 text-blue-600 backdrop-blur-sm shadow-sm">
-            {blog.category}
+            {blog.category || "Uncategorized"}
           </span>
         </div>
 
-        {/* Responsive Image - UPDATED */}
+        {/* Responsive Image */}
         <div className="relative w-full h-48 sm:h-56 md:h-52 lg:h-56 bg-gray-100 border-b border-gray-100">
           {cardImage ? (
             <Image
@@ -100,22 +108,16 @@ export function CardDemo({ blog }: { blog: any }) {
 
           {/* Title */}
           <h1 className="font-bold text-xl text-gray-900 mb-3">
-            {parse(sliceTitle(blog.title))}
+            {parse(sliceTitle(blog.title || ""))}
           </h1>
 
           {/* Content */}
-          <p
-            className="font-normal text-sm text-gray-700 mb-4 flex-grow"
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(sliceDescription(blog.content)),
-            }}
-          />
+          <p className="font-normal text-sm text-gray-700 mb-4 flex-grow">
+            {blog.content ? sliceDescription(blog.content) : "No description available"}
+          </p>
 
           {/* Read More */}
-          <div
-            className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors mt-auto"
-            onClick={() => handleRedirect()}
-          >
+          <div className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors mt-auto">
             Read More
             <svg
               xmlns="http://www.w3.org/2000/svg"

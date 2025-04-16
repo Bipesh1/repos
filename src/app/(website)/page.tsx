@@ -1,4 +1,3 @@
-
 import { AffiliateSection } from "@/components/section/affiliated-partner";
 import FaqStatic from "@/components/section/faq-static";
 import HeroSection from "@/components/section/hero-section";
@@ -10,7 +9,7 @@ import { WhyUsSection } from "@/components/section/why-us-section";
 
 export default function Home() {
   return (
-    <div className="min-h-screen relative overflow-x-hidden ">
+    <div className="min-h-screen relative overflow-x-hidden">
       <HeroSection/>
       <ServiceSection/>
       <WhyUsSection/>
@@ -19,6 +18,8 @@ export default function Home() {
       <AffiliateSection/>
       <MostSearch/>
       <FaqStatic/>
+      
+     
     </div>
   );
 }

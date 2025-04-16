@@ -144,16 +144,16 @@ export default async function MobileSidebar() {
               <div className="mb-4">
                 <h3 className="font-medium text-primary mb-2 pl-4">Guide</h3>
                 <div className="space-y-2 pl-6">
-                  <Link href="/company/blog/top-universities-in-usa-for-nepali-students~67f80464327ca2a732f32f0a" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/top-universities-in-usa-for-nepali-students" className="block text-secondary/80 hover:text-primary">
                     Top Universities
                   </Link>
-                  <Link href="/company/blog/study-in-usa-with-scholarships-for-nepali-students~67f7fcf3f30adbf521cc3e12" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/study-in-usa-with-scholarships-for-nepali-students" className="block text-secondary/80 hover:text-primary">
                     Scholarships
                   </Link>
-                  <Link href="/company/blog/study-in-usa-for-working-professionals-in-nepal~67f9236338f1f786eb6d102c" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/study-in-usa-for-working-professionals-in-nepal" className="block text-secondary/80 hover:text-primary">
                     For Working Professionals
                   </Link>
-                  <Link href="/company/blog/usa-visa-guide-in-nepal~67fe97b8a5995c7cf121d651" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/usa-visa-guide-in-nepal" className="block text-secondary/80 hover:text-primary">
                     Visa Guide
                   </Link>
                 </div>
@@ -163,16 +163,16 @@ export default async function MobileSidebar() {
               <div className="mb-4">
                 <h3 className="font-medium text-primary mb-2 pl-4">Universities</h3>
                 <div className="space-y-2 pl-6">
-                  <Link href="/company/blog/study-bachelors-in-usa-from-nepal~67f932fed4f1065b96d0e855" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/study-bachelors-in-usa-from-nepal" className="block text-secondary/80 hover:text-primary">
                     Bachelor
                   </Link>
-                  <Link href="/company/blog/study-masters-in-usa-from-nepal~67f936891451002523b4dd70" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/study-masters-in-usa-from-nepal" className="block text-secondary/80 hover:text-primary">
                     Masters
                   </Link>
-                  <Link href="/company/blog/dba-in-usa-fir-international-students~67f9fd2f9c65eac08f3c6ad1" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/dba-in-usa-fir-international-students" className="block text-secondary/80 hover:text-primary">
                     DBA
                   </Link>
-                  <Link href="/company/blog/study-phd-in-usa-from-nepal~67f92ae62b62a1700762852c" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/study-phd-in-usa-from-nepal" className="block text-secondary/80 hover:text-primary">
                     PhD
                   </Link>
                 </div>
@@ -182,16 +182,16 @@ export default async function MobileSidebar() {
               <div>
                 <h3 className="font-medium text-primary mb-2 pl-4">Living In USA</h3>
                 <div className="space-y-2 pl-6">
-                  <Link href="/company/blog/stem-courses-in-usa-for-nepali-students~67fe8f93ba63302c15c5ab84" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/stem-courses-in-usa-for-nepali-students" className="block text-secondary/80 hover:text-primary">
                     Stem Courses
                   </Link>
-                  <Link href="/company/blog/post-study-job-in-usa-for-nepali-students~67fe8d35ba63302c15c5aa5e" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/post-study-job-in-usa-for-nepali-students" className="block text-secondary/80 hover:text-primary">
                     Post Study Work
                   </Link>
-                  <Link href="/company/blog/how-to-get-greencard-after-study~67fbdf96f197f9fe307e36a0" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/how-to-get-greencard-after-study" className="block text-secondary/80 hover:text-primary">
                     Apply for Greencard
                   </Link>
-                  <Link href="/company/blog/tips-for-getting-on-campus-job~67fe7bb5f7a46ee89f94d168" className="block text-secondary/80 hover:text-primary">
+                  <Link href="/company/blog/tips-for-getting-on-campus-job" className="block text-secondary/80 hover:text-primary">
                     On Campus Job
                   </Link>
                 </div>
@@ -204,28 +204,28 @@ export default async function MobileSidebar() {
             <AccordionTrigger className="text-base py-3">Resources</AccordionTrigger>
             <AccordionContent>
               <div className="space-y-2 pl-4">
-                <Link href="/company/blog/course-advice~67e50dc45644b83ab5a29086" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/course-advice" className="block text-secondary/80 hover:text-primary">
                   Course Advice
                 </Link>
-                <Link href="/company/blog/education-loan-in-nepal~67fa8ad413b6d24f4b3f22c5" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/education-loan-in-nepal" className="block text-secondary/80 hover:text-primary">
                   Education Loan
                 </Link>
-                <Link href="/company/blog/meet-alumini-from-usa-universities~67fa126a0db45ebf3417867d" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/meet-alumini-from-usa-universities" className="block text-secondary/80 hover:text-primary">
                   Meet Alumni
                 </Link>
-                <Link href="/company/blog/assured-scholarship~67e50ebf5644b83ab5a29120" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/assured-scholarship" className="block text-secondary/80 hover:text-primary">
                   Assured Scholarship
                 </Link>
-                <Link href="/company/blog/express-admission-to-usa-in-nepal~67f9273e67f097962bcd252b" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/express-admission-to-usa-in-nepal" className="block text-secondary/80 hover:text-primary">
                   Express Admission
                 </Link>
-                <Link href="/company/blog/study-mbbs-in-usa-from-nepal~67f92d9449c72577ed5d60bc" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/study-mbbs-in-usa-from-nepal" className="block text-secondary/80 hover:text-primary">
                   MBBS
                 </Link>
-                <Link href="/company/blog/study-in-singapore~67fbb82351825db8d67e6b76" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/study-in-singapore" className="block text-secondary/80 hover:text-primary">
                   Why Singapore?
                 </Link>
-                <Link href="/company/blog/career-for-nepali-nurse-in-usa~67fb9ed88d1b748b994b69ef" className="block text-secondary/80 hover:text-primary">
+                <Link href="/company/blog/career-for-nepali-nurse-in-usa" className="block text-secondary/80 hover:text-primary">
                   For Nursing
                 </Link>
               </div>

@@ -15,7 +15,7 @@ export function WhyUsSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-4">Why to Choose <span className="text-primary">Going to College Abroad</span></h2>
-          <p className="text-base md:text-lg text-gray-700 opacity-90 max-w-2xl mx-auto">We <span className="text-secondary">Going to College Abroad</span> are one of the best consultancy for the abroad facilities. Join us in this journey.</p>
+          <p className="text-base md:text-lg text-gray-700 opacity-90 max-w-2xl mx-auto">Apply on your own <span className="text-secondary">track your admission on mobile, and secure scholarships</span>—all in your control, hassle-free!</p>
         </motion.div>
 
         <div className="grid xl:grid-cols-2 gap-16 items-center">

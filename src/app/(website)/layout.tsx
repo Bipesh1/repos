@@ -5,6 +5,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Sparklefooter from "@/components/section/sparkle-footer";
 import AdBanner from "@/components/section/advertisement-banner";
+import WhatsAppButton from "@/components/whatsappbutton";
 
 const poppins= Poppins({
   weight: ['400','500','600','700'],
@@ -33,6 +34,7 @@ export default function RootLayout({
         <div className="overflow-x-hidden">
           <Sparklefooter/>
         </div>
+        <WhatsAppButton/>
         </>      
       
  

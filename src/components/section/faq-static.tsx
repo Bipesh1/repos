@@ -45,7 +45,7 @@ export default function FaqStatic() {
         </h2>
         <p className=" text-base text-center">
           See the most frequently asked
-          <span className="text-secondary"> 1uestions</span>
+          <span className="text-secondary"> Questions</span>
         </p>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2">

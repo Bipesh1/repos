@@ -9,22 +9,22 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Nepal Abroad Consultancy | Study, Work, and Settle Abroad",
+  title: "Going College | Study, Work, and Settle Abroad",
   description:
-    "Top-rated consultancy in Nepal for studying, working, and settling abroad. Get expert guidance for visas, scholarships, and career opportunities worldwide.",
+    "Top-rated platform in Nepal for studying, working, and settling abroad. Get expert guidance for visas, scholarships, and career opportunities worldwide.",
   keywords: [
-    "Nepal abroad consultancy",
+    "Nepal abroad study platform",
     "study abroad Nepal",
     "work abroad Nepal",
     "settle abroad Nepal",
-    "visa consultancy Nepal",
+    "visa abroad Nepal",
     "scholarship abroad Nepal",
   ],
   authors: [{ name: "GoingCollege", url: "https://goingcollege.com" }],
   openGraph: {
-    title: "Nepal Abroad Consultancy | Study, Work, and Settle Abroad",
+    title: "Going College | Study, Work, and Settle Abroad",
     description:
-      "Top-rated consultancy in Nepal for studying, working, and settling abroad. Get expert guidance for visas, scholarships, and career opportunities worldwide.",
+      "Top-rated platform in Nepal for studying, working, and settling abroad. Get expert guidance for visas, scholarships, and career opportunities worldwide.",
     type: "website",
     url: "https://goingcollege.com",
     images: [
@@ -38,9 +38,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nepal Abroad Consultancy | Study, Work, and Settle Abroad",
+    title: "Going College | Study, Work, and Settle Abroad",
     description:
-      "Top-rated consultancy in Nepal for studying, working, and settling abroad. Get expert guidance for visas, scholarships, and career opportunities worldwide.",
+      "Top-rated platform in Nepal for studying, working, and settling abroad. Get expert guidance for visas, scholarships, and career opportunities worldwide.",
     images: ["https://goingcollege.com/og-image.jpg"], // Replace with your OG image URL
   },
 };
@@ -58,11 +58,11 @@ export default function RootLayout({
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            name: "Nepal Abroad Consultancy",
+            name: "Nepal Abroad Platform",
             url: "https://goingcollege.com",
             logo: "https:/goingcollege/logo.png", // Replace with your logo URL
             description:
-              "Top-rated consultancy in Nepal for studying, working, and settling abroad.",
+              "Top-rated platform in Nepal for studying, working, and settling abroad.",
             address: {
               "@type": "PostalAddress",
               streetAddress: "Your Street Address",

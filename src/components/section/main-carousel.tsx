@@ -6,7 +6,17 @@ import Image from "next/image";
 import { CiLocationOn } from "react-icons/ci";
 
 export default function MainCarousel({ data }: { data: any }) {
-  const sortedData = [...data].sort((a, b) => (a.priority || 999) - (b.priority || 999));
+  // Filter for USA universities only
+  const usaUniversities = data.filter((uni: any) => 
+    uni.country?.name?.toLowerCase() === "usa" || 
+    uni.country?.name?.toLowerCase() === "united states" || 
+    uni.country?.name?.toLowerCase() === "united states of america"
+  );
+  
+  // Sort the filtered universities by priority and take only top 4
+  const topUniversities = [...usaUniversities]
+    .sort((a, b) => (a.priority || 999) - (b.priority || 999))
+    .slice(0, 4);
 
   const carousel = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
@@ -24,11 +34,11 @@ export default function MainCarousel({ data }: { data: any }) {
     handleResize(); // Initial calculation
     window.addEventListener("resize", handleResize); // Listen for window resize
     return () => window.removeEventListener("resize", handleResize); // Cleanup
-  }, [data]); // Recalculate when data changes
+  }, [topUniversities]); // Recalculate when filtered data changes
 
   return (
     <div className="w-full overflow-hidden">
-      {sortedData.length > 0 ? (
+      {topUniversities.length > 0 ? (
         <motion.div
           ref={carousel}
           drag="x"
@@ -39,7 +49,7 @@ export default function MainCarousel({ data }: { data: any }) {
           transition={{ duration: 0.2, ease: "easeInOut" }}
           className="flex will-change-transform justify-center cursor-grab active:cursor-grabbing gap-4 px-4" // Add gap and padding
         >
-          {sortedData.slice(0, 4)?.map((itemData) => (
+          {topUniversities.map((itemData) => (
             <motion.div
               key={itemData._id}
               className="min-w-[16rem] md:min-w-[20rem] max-w-[16rem] md:max-w-[20rem] min-h-[25rem] p-4 bg-white shadow-lg rounded-lg flex flex-col overflow-hidden" // Responsive sizing
@@ -48,10 +58,10 @@ export default function MainCarousel({ data }: { data: any }) {
               <div className="h-1/2 relative">
                 <Link href={`/university/${itemData.slug}`}>
                   <Image
-                    src={itemData?.image.url}
+                    src={itemData?.image?.url || "/placeholder-university.jpg"}
                     width={400}
                     height={400}
-                    alt="img"
+                    alt={`${itemData.name} image`}
                     className="w-full h-full object-cover rounded-t-lg"
                   />
                 </Link>
@@ -60,7 +70,7 @@ export default function MainCarousel({ data }: { data: any }) {
               {/* Bottom Half - Details */}
               <div className="flex flex-col justify-center p-4">
                 <h2 className="text-lg font-semibold text-gray-800">{itemData.name}</h2>
-                <p className="text-sm text-gray-600">{itemData.country.name}</p>
+                <p className="text-sm text-gray-600">USA</p>
                 <p className="text-sm text-gray-600">
                   {itemData.category === "gold" ? "Gold" : "Ivy"}
                 </p>
@@ -84,7 +94,7 @@ export default function MainCarousel({ data }: { data: any }) {
         </motion.div>
       ) : (
         <div className="text-center py-8">
-          <p className="text-gray-600">No universities match your filter criteria</p>
+          <p className="text-gray-600">No USA universities available</p>
         </div>
       )}
     </div>

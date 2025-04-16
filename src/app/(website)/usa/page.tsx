@@ -13,6 +13,18 @@ import TopUniversities from "@/components/topuniversities";
 import FaqCountry from "@/components/faq-country";
 import { fetchCountryById } from "@/app/(protected)/actions/country";
 
+
+export async function generateMetadata({ searchParams }: { searchParams: { id?: string } }) {
+  const countryId = searchParams?.id;
+  const countryresponse = await fetchCountryById(countryId);
+  const country = countryresponse?.data?.country;
+
+  return {
+    title: `Study in ${country?.name || "a Country"} | GoingCollege`,
+    description: `Explore top universities, education costs, scholarships, and admission requirements for studying in ${country?.title || "this country"}.`,
+  };
+}
+
 export default async function page({
   searchParams,
 }: {

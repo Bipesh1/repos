@@ -9,6 +9,45 @@ import CourseInfoCard from '@/components/courseinfocard';
 import { NavigationCourse } from '@/components/navigation-courses';
 import parse from "html-react-parser"
 
+export async function generateMetadata({ params }: { params: { slug: string; courseid: string } }) {
+  const { slug, courseid } = params;
+
+  const uniResponse = await fetchUniversityBySlug(slug);
+  const courseResponse = await fetchCourseBySlug(courseid);
+
+  const university = uniResponse?.data?.university;
+  const course = courseResponse?.data?.course;
+
+  if (!course || !university) {
+    return {
+      title: "Course Not Found | GoingCollege",
+      description: "The requested course could not be found.",
+    };
+  }
+
+  return {
+    title: `${course.title} at ${university.name} | GoingCollege`,
+    description:
+      course.overview?.replace(/<[^>]*>?/gm, "").slice(0, 150) ||
+      `Explore the ${course.title} course offered at ${university.name}, including fees, duration, and scholarships.`,
+    openGraph: {
+      title: `${course.title} at ${university.name} | GoingCollege`,
+      description:
+        course.overview?.replace(/<[^>]*>?/gm, "").slice(0, 150) ||
+        `Learn more about ${course.title} at ${university.name}.`,
+      images: university.image?.url ? [{ url: university.image.url }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${course.title} at ${university.name} | GoingCollege`,
+      description:
+        course.overview?.replace(/<[^>]*>?/gm, "").slice(0, 150) ||
+        `Details on ${course.title}, offered at ${university.name}.`,
+      images: university.image?.url ? [university.image.url] : [],
+    },
+  };
+}
+
 export default async function Page({params}:{
     params:{
         slug:string;

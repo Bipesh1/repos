@@ -40,7 +40,7 @@ export function NavigationUniversity() {
                     
                 }`}
               >
-                Description
+                Requirements
               </Link>
             </button>
           </div>
