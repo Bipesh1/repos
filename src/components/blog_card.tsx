@@ -18,7 +18,7 @@ export function CardDemo({ blog }: { blog: any }) {
   }, [blog]);
 
   const handleRedirect = () => {
-    router.push(`/company/blog/${blog.slug}~${blog._id}`);
+    router.push(`/company/blog/${blog.slug}`);
 
   };
 

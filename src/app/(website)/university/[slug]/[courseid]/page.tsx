@@ -4,7 +4,7 @@ import CountryHeroSection from "@/components/country-hero-section";
 
 
 import InquiryForm from "@/components/inquiryform";
-import { fetchCourseById } from '@/app/(protected)/actions/course';
+import { fetchCourseById, fetchCourseBySlug } from '@/app/(protected)/actions/course';
 import CourseInfoCard from '@/components/courseinfocard';
 import { NavigationCourse } from '@/components/navigation-courses';
 import parse from "html-react-parser"
@@ -19,7 +19,7 @@ export default async function Page({params}:{
 
     const uniresponse= await fetchUniversityBySlug(slug)
     const unidata= uniresponse.data.university
-    const courseresponse=await fetchCourseById(courseid)
+    const courseresponse=await fetchCourseBySlug(courseid)
     const coursedata= courseresponse.data.course
   return (
     <div className="container mx-auto space-y-4">

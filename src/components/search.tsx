@@ -226,7 +226,7 @@ export function SearchBar() {
                     {filteredResults.courses.map((course) => (
                       <li key={course._id} className="border-b border-gray-100 last:border-0">
                         <Link 
-                          href={`/university/${course.university?.slug}/${course._id}`}
+                          href={`/university/${course.university?.slug}/${course.slug}`}
                           className="block px-4 py-3 hover:bg-gray-50 transition-colors"
                           onClick={() => setShowResults(false)}
                         >

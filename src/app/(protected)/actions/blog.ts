@@ -36,6 +36,21 @@ export async function getBlog(id:string): Promise<ActionResponse<any[]>> {
       return { data: null, error:"An error occured"};
     }
   }
+  export async function getBlogBySlug(slug:string): Promise<ActionResponse<any[]>> {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/by-slug/${slug}`,{
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+      }
+    }
+    );
+  
+      return { data: response.data.blog, msg: "Blogs fetched successfully", error: null };
+    } catch (error: unknown) {
+      return { data: null, error:"An error occured"};
+    }
+  }
 
 
 

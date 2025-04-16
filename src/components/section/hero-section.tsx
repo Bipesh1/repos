@@ -1,23 +1,15 @@
 "use client"
-
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
-
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { motion } from "framer-motion"
 import Image from 'next/image'
 import heroImage from "@/assets/hero.jpg"
 import heroImage1 from "@/assets/hero1.jpg"
-
-import { Button } from "../ui/button"
 import { TypingAnimation } from "../magicui/typing-animation"
-import Link from "next/link"
-import { useEffect, useState } from "react"
-import { checkUser } from "@/app/(protected)/actions/user"
 import RegisterGetstarted from "./register-getstarted"
 
 export default function HeroSection() {
@@ -26,7 +18,7 @@ export default function HeroSection() {
       <div className='container px-4 mx-auto grid grid-cols-1 xl:grid-cols-2 gap-6 md:gap-8 items-center'>
         
         {/* Left Column - Carousel */}
-        <div className="w-full">
+        <div className="w-full py-5">
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -43,7 +35,7 @@ export default function HeroSection() {
               <CarouselContent>
                 {[heroImage, heroImage1].map((image, index) => (
                   <CarouselItem key={index}>
-                    <div className='relative w-full h-[280px] sm:h-[350px] md:h-[400px] lg:h-[500px] xl:h-[40rem] rounded-lg overflow-hidden'>
+                    <div className='relative w-full h-[400px] md:h-[450px] lg:h-[500px] xl:h-[550px] rounded-lg overflow-hidden'>
                       <Image
                         src={image}
                         alt="hero image"
@@ -64,8 +56,8 @@ export default function HeroSection() {
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }} 
-          className='bg-primary w-full px-6 py-8 sm:px-10 md:px-14 lg:px-20 xl:px-16 rounded-xl text-center xl:text-left flex flex-col justify-center space-y-5 sm:space-y-6 md:space-y-8 shadow-md'
+          transition={{ duration: 0.7 }}
+          className="h-[400px] md:h-[450px] lg:h-[500px] xl:h-[550px] bg-primary w-full px-6 py-8 sm:px-10 md:px-14 lg:px-12 rounded-xl text-center xl:text-left flex flex-col justify-center space-y-6 md:space-y-8 shadow-md"
         >
           <TypingAnimation className="text-white text-center xl:text-left text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
             Self-Apply. Get Accepted. Achieve More.

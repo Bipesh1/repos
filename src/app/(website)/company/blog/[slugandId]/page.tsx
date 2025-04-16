@@ -1,7 +1,7 @@
 "use client";
 import DOMPurify from "dompurify";
 import { useParams } from "next/navigation";
-import { getBlog } from "@/app/(protected)/actions/blog";
+import { getBlog, getBlogBySlug } from "@/app/(protected)/actions/blog";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import CarouselSlider from "@/components/Carousel";
@@ -12,7 +12,6 @@ import 'quill/dist/quill.snow.css';
 export default function BlogDetail() {
   const params = useParams();
   const slugandId = params.slugandId as string;
-  const id = slugandId?.split("~")[1];
   const [blog, setBlog] = useState<any>([]);
   const [mainImage, setMainImage] = useState("");
   const [carouselImages, setCarouselImages] = useState<any>([]);
@@ -24,7 +23,7 @@ export default function BlogDetail() {
   const fetchBlogs = async () => {
     setIsLoading(true);
     try {
-      const response = await getBlog(id);
+      const response = await getBlogBySlug(slugandId);
       const data = response.data || {};
       setBlog(data);
 

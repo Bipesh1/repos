@@ -31,8 +31,8 @@ export default function RegisterGetstarted() {
       {!user && (
         <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 sm:gap-x-5">
           <Button className="bg-blue-800 hover:bg-blue-800/80 rounded-full px-8 py-3 text-sm sm:text-base">
-            <Link href="/register" className="text-center">
-              Register
+            <Link href="/courseadvice" className="text-center">
+              Find Me
             </Link>
           </Button>
           <Button className="bg-secondary hover:bg-secondary/80 rounded-full py-3 text-sm sm:text-base">

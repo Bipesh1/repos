@@ -179,7 +179,7 @@ function CourseCarousel({ data, uniimg }: { data: any[]; uniimg: string }) {
               >
                 {/* Top Half - Image */}
                 <div className="h-1/2 relative">
-                  <Link href={`${pathname}/${itemData._id}`}>
+                  <Link href={`${pathname}/${itemData.slug}`}>
                     <Image
                       src={uniimg}
                       width={400}

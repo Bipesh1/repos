@@ -53,6 +53,21 @@ export async function createCourse(values:any): Promise<ActionResponse<any>> {
     }
   }
 
+  export async function fetchCourseBySlug(slug:any): Promise<ActionResponse<any>> {
+    try {
+      const token =await getToken()
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/course//by-slug/${slug}`,{
+        withCredentials: true,
+        headers:{
+          'Authorization': `Bearer ${token}`,
+        }
+    });
+     
+      return { data: response.data,msg:"Fetched Succesfully", error: null };
+    } catch (error: unknown) {
+      return { data: null, error:"An error occured"};
+    }
+  }
 
   
   export async function editCourse(values:any,id:any): Promise<ActionResponse<any>> {
