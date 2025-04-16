@@ -76,6 +76,7 @@ export async function Navigation() {
                             </div>
                             <div>
                               <Link 
+                              prefetch={true}
                                 href={`/${country.name.toLowerCase()}?id=${country._id}`} 
                                 className="text-gray-900 font-medium group-hover:text-primary transition-colors"
                               >
