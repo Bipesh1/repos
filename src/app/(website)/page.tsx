@@ -3,6 +3,7 @@ import FaqStatic from "@/components/section/faq-static";
 import HeroSection from "@/components/section/hero-section";
 import { MostSearch } from "@/components/section/most-searched";
 import ServiceSection from "@/components/section/services-section";
+import { StatsSection } from "@/components/section/stats-section";
 import { Testimonials } from "@/components/section/testmonials";
 import AllTopUniversities from "@/components/section/top-universities";
 import { WhyUsSection } from "@/components/section/why-us-section";

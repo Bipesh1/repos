@@ -67,7 +67,6 @@ export default function StudentEdit({ id }: { id: string }) {
 
         const response = await fetchStudentById(id);
         if (response.data) {
-          console.log(response.data)
           const student = response.data;
           setStudent(student);
           // Set image preview if image exists
@@ -96,7 +95,6 @@ export default function StudentEdit({ id }: { id: string }) {
     try {
       startTransition(async () => {
         const response = await editStudent(values, id);
-        console.log(response)
         form.reset();
         setIsOpen(false);
       });
@@ -125,7 +123,6 @@ export default function StudentEdit({ id }: { id: string }) {
     setIsAssigningCounselor(true);
     try {
       const response = await assignCounselor({ counselor: counselor }, id);
-      console.log(response)
     } catch (error) {
       console.error("Error assigning counselor:", error);
     } finally {

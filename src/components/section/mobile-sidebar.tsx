@@ -247,7 +247,7 @@ export default async function MobileSidebar() {
               9851014902
             </Link>{" "}
             |{" "}
-            <Link href="tel:+977-9851014902" className="cursor-pointer">
+            <Link href="tel:+977-9807438831" className="cursor-pointer">
             9807438831
             </Link>
           </div>

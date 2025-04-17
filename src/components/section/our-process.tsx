@@ -15,33 +15,33 @@ export function OurProcessSection() {
   const steps = [
     {
       icon: ClipboardList,
-      title: "Initial Consultation",
-      description: "We start with understanding your academic background, interests, and career aspirations to provide tailored guidance."
+      title: "Sign Up",
+      description: "Create your account with email verification to unlock your personalized GoingCollege dashboard."
     },
     {
       icon: Users,
-      title: "University Selection",
-      description: "Based on your profile, we help you shortlist universities that align with your academic goals and financial constraints."
+      title: "Explore Universities",
+      description: "Browse US universities, courses and scholarships tailored to your academic background and career goals."
     },
     {
       icon: FileText,
-      title: "Application Assistance",
-      description: "Our experts guide you through the application process, help with documentation, and review your personal statements and essays."
+      title: "Select Package",
+      description: "Choose between Starter or Achiever package to unlock features, premiums universities and unlock your EduPilot."
     },
     {
       icon: GraduationCap,
-      title: "Scholarship Guidance",
-      description: "We help you identify and apply for scholarships and financial aid opportunities to make your education affordable."
+      title: "Find Scholarships",
+      description: " Based on your profile, EduPilot will highlight available scholarships and guide you on how to increase your eligibility."
     },
     {
       icon: Plane,
-      title: "Visa Assistance",
-      description: "Our team assists with visa application procedures, interview preparation, and necessary documentation."
+      title: "Apply Directly",
+      description: "Upload your documents and apply to various universities with single application. Our AI ensures everything is accurate before submission."
     },
     {
       icon: UserCheck,
-      title: "Pre-Departure Support",
-      description: "We provide comprehensive pre-departure orientation to prepare you for life in a new country."
+      title: "Get Support",
+      description: "An EduPilot will be assisting you with updates, Visa updates, and further application journey during your journey to get Green Slip."
     }
   ];
 

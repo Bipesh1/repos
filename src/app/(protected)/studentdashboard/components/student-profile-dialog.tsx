@@ -193,7 +193,6 @@ export function StudentProfileDialog({ id }: { id: string }) {
         setIsLoading(true);
         try {
           const response = await checkUser();
-          console.log(response.data);
           if (response.data) {
             const studentData = response.data;
             form.reset({

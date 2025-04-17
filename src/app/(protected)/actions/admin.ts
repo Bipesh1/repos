@@ -114,7 +114,6 @@ export async function getActiveAdmin(): Promise<ActionResponse<any[]>> {
   }
 
   export async function updateAdminPassword(adminId:any, newPassword:any) {
-    console.log(adminId,newPassword)
     try {
       // Validate password before sending to backend
       if (newPassword.length < 6) {

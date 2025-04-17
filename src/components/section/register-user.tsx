@@ -1,5 +1,5 @@
 "use client";
-import React, { useTransition } from "react";
+import React, { useTransition, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,7 +11,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { studentSchema } from "@/formschemas/student";
 import Link from "next/link";
 
-type RegisterFormValues = z.infer<typeof studentSchema>;
+// Update the schema to include termsAccepted
+const extendedSchema = studentSchema.extend({
+  termsAccepted: z.boolean().refine(val => val === true, {
+    message: "You must accept the terms and conditions to register"
+  })
+});
+
+type RegisterFormValues = z.infer<typeof extendedSchema>;
 
 export default function RegisterUser() {
   const router = useRouter();
@@ -21,22 +28,30 @@ export default function RegisterUser() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    watch,
   } = useForm<RegisterFormValues>({
-    resolver: zodResolver(studentSchema),
+    resolver: zodResolver(extendedSchema),
     defaultValues: {
       userName: "",
       email: "",
       mobile: "",
       password: "",
+      termsAccepted: false,
     },
   });
+
+  // Watch the termsAccepted value to determine if submit should be enabled
+  const termsAccepted = watch("termsAccepted");
 
   const onSubmit = (data: RegisterFormValues) => {
     startTransition(async () => {
       try {
+        // Remove termsAccepted from data before sending to the API
+        const { termsAccepted, ...apiData } = data;
+        
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/register`,
-          data,
+          apiData,
           { withCredentials: true }
         );
         if(response.status==201){
@@ -134,6 +149,20 @@ export default function RegisterUser() {
           {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
         </div>
 
+        {/* Terms and Conditions Checkbox */}
+        <div className="flex items-start gap-2">
+          <input
+            {...register("termsAccepted")}
+            type="checkbox"
+            id="termsAccepted"
+            className="mt-1 "
+          />
+          <label htmlFor="termsAccepted" className="text-sm text-gray-700">
+            I agree to the <span className="text-secondary cursor-pointer hover:underline">Terms and Conditions</span> and <span className="text-secondary cursor-pointer hover:underline">Privacy Policy</span>
+          </label>
+        </div>
+        {errors.termsAccepted && <p className="text-red-500 text-sm">{errors.termsAccepted.message}</p>}
+
         {/* Forgot Password */}
         <div className="text-right">
           <span className="text-secondary cursor-pointer hover:underline text-sm">Forgot Password?</span>
@@ -141,9 +170,9 @@ export default function RegisterUser() {
 
         {/* Submit Button */}
         <button
-          className="w-full py-3 bg-primary text-white font-semibold rounded-lg hover:bg-secondary transition duration-200"
+          className={`w-full py-3 ${!termsAccepted ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary hover:bg-secondary'} text-white font-semibold rounded-lg transition duration-200`}
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !termsAccepted}
         >
           {isSubmitting ? "Registering..." : "Register Now"}
         </button>
@@ -152,7 +181,7 @@ export default function RegisterUser() {
       {/* Already have an account? */}
       <p className="text-center text-sm mt-4">
         Already have an account?{" "}
-       <Link href="/login"><span className="text-secondary cursor-pointer hover:underline">Login</span></Link> 
+        <Link href="/login"><span className="text-secondary cursor-pointer hover:underline">Login</span></Link> 
       </p>
     </div>
   );
